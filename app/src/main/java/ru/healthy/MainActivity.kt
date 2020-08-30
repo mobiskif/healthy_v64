@@ -28,7 +28,6 @@ import java.io.File
 val padd = 8.dp
 val tmod = Modifier.padding(0.dp, 0.dp, 0.dp, padd)
 val tstyle = TextStyle(fontSize = 18.sp)
-
 val colors = listOf(
         Color(0xFFffd7d7.toInt()),
         Color(0xFFffe9d6.toInt()),
