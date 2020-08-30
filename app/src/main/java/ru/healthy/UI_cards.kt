@@ -104,6 +104,24 @@ fun myUsrEditFields(model: AppViewModel) {
     var O by state { TextFieldValue("${model.current_usr["O"]}") }
     var D by state { TextFieldValue("${model.current_usr["D"]}") }
 
+    Row {
+        Button(content={ Text("Сохранить") }, onClick = {
+            var usr = model.current_usr.toMutableMap()
+            usr["F"] = F.text
+            usr["I"] = I.text
+            usr["O"] = O.text
+            usr["D"] = D.text
+            model.current_usr = usr
+            model.updateUserInList()
+            model.readLpuList()
+            model.current_state.postValue("Выбрать клинику")
+        })
+        TextButton(content={ Text("Удалить") }, onClick = {
+            model.deleteCurrentUser()
+            model.current_state.postValue("Выбрать пациента")
+        })
+    }
+    Spacer(modifier = Modifier.preferredHeightIn(padd))
     TextField(
         textStyle = estyle,
         value = F,
@@ -133,27 +151,8 @@ fun myUsrEditFields(model: AppViewModel) {
         placeholder = { Text(text = "1986-04-26") }
         ,modifier = Modifier.padding(0.dp, padd/2)
     )
-    Spacer(modifier = Modifier.preferredHeightIn(padd/2))
+    Spacer(modifier = Modifier.preferredHeightIn(padd))
     myDistrictSpinner(model, model.current_usr, estyle)
-    Spacer(modifier = Modifier.preferredHeightIn(padd*2))
-    Row {
-        Button(content={ Text("Сохранить") }, onClick = {
-            var usr = model.current_usr.toMutableMap()
-            usr["F"] = F.text
-            usr["I"] = I.text
-            usr["O"] = O.text
-            usr["D"] = D.text
-            model.current_usr = usr
-            model.updateUserInList()
-            model.readLpuList()
-            model.current_state.postValue("Выбрать клинику")
-        })
-        TextButton(content={ Text("Удалить") }, onClick = {
-            model.deleteCurrentUser()
-            model.current_state.postValue("Выбрать пациента")
-        })
-    }
-
 }
 
 @Composable

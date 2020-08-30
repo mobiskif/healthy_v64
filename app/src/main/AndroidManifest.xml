@@ -5,9 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/redcross_small"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/redcross_small"
         android:supportsRtl="true"
         android:theme="@style/Theme.Rev61">
         <activity android:name=".MainActivity"
