@@ -182,7 +182,7 @@ fun myTopAppBar(model: AppViewModel) {
                 IconButton(onClick = { model.current_state.postValue("Выйти") }) {
                     Icon(Icons.Filled.ExitToApp)
                 }
-                IconButton(onClick = { model.isAdmin = !model.isAdmin }) { Icon(Icons.Filled.MoreVert) }
+                //IconButton(onClick = { model.isAdmin = !model.isAdmin }) { Icon(Icons.Filled.MoreVert) }
                 //myTopDropDownMenu(model)
             }
     )
