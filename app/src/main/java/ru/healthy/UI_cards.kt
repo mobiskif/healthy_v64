@@ -1,6 +1,7 @@
 package ru.healthy
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
