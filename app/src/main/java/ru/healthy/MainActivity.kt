@@ -7,22 +7,25 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Observer
+import androidx.ui.tooling.preview.Preview
 import ru.healthy.R.color.*
 import java.io.File
 
@@ -167,7 +170,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun myTopAppBar(model: AppViewModel) {
     TopAppBar(
             title = { Text("${model.current_state.value}", maxLines = 2) },
@@ -189,173 +192,73 @@ fun myTopAppBar(model: AppViewModel) {
     )
 }
 
-@Composable
-internal fun ThemedPreview(
-        darkTheme: Boolean = false,
-        children: @Composable () -> Unit
-) {
-    JetnewsTheme(darkTheme = darkTheme) {
-        Surface {
-            children()
-        }
-    }
-}
-
-
-@Composable
-fun JetnewsTheme(
-        darkTheme: Boolean = isSystemInDarkTheme(),
-        content: @Composable () -> Unit
-) {
-    MaterialTheme(
-            //colors = if (darkTheme) DarkThemeColors else LightThemeColors,
-            //typography = JetnewsTypography,
-            //shapes = JetnewsShapes,
-            content = content
-    )
-}
-
-val Red200 = Color(0xfff297a2)
-val Red300 = Color(0xffea6d7e)
-val Red700 = Color(0xffdd0d3c)
-val Red800 = Color(0xffd00036)
-val Red900 = Color(0xffc20029)
-
-/*
-     <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
- */
-/*
-      <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
- */
-
-
 private val LightThemeColors = lightColors(
-        primary = Color(purple_500),
-        primaryVariant = Color(purple_700),
-        onPrimary = Color.White,
-        secondary = Color(teal_200),
-        secondaryVariant = Color(teal_700),
-        onSecondary = Color.Black,
-        error = Red800
+        primary = Color(primaryColor),
+        primaryVariant = Color(primaryColor),
+        onPrimary = Color(primaryTextColor),
+        secondary = Color(secondaryColor),
+        secondaryVariant = Color(secondaryColor),
+        onSecondary = Color(secondaryTextColor),
+        error = Color.Red
 )
 
 private val DarkThemeColors = darkColors(
-        primary = Color(purple_200),
-        primaryVariant = Color(purple_700),
+        primary = Color(primaryDarkColor),
+        primaryVariant = Color(primaryDarkColor),
         onPrimary = Color.Black,
-        secondary = Color(teal_200),
-        onSecondary = Color.White,
-        error = Red200
+        secondary = Color(secondaryDarkColor),
+        onSecondary = Color.Black,
+        error = Color.Red
 )
 
-
-@androidx.compose.runtime.Composable
+@Composable
 fun UI_(model: AppViewModel) {
-    ThemedPreview(
-            darkTheme = isSystemInDarkTheme()
-            //darkTheme = true
+    MaterialTheme(
+            //colors = if (isSystemInDarkTheme()) DarkThemeColors else LightThemeColors,
     ) {
-        //Column(modifier = Modifier.fillMaxSize()) {
-            Scaffold(
-                    topBar = {
-                        myTopAppBar(model)
-                    },
-                    floatingActionButton = {
-                        if (model.current_state.value.equals("Выбрать пациента")) {
-                            FloatingActionButton(
-                                    onClick = {
-                                        //model.current_usr = model.createUser()
-                                        //model.usrList.value!!.plus(model.current_usr)
-                                        val newuser = model.createUser()
-                                        model.addUser(newuser)
-                                        model.current_usr = newuser
-                                        model.current_state.postValue("Изменить")
-                                    }
-                            ) { Icon(Icons.Filled.Add) }
-                        } else if (model.current_state.value.equals("Выбрать специальность")) {
-                            FloatingActionButton(
-                                    onClick = {
-                                        model.current_state.postValue("Отложенные талоны")
-                                    }
-                            ) { Icon(Icons.Filled.DateRange) }
-                        }
-                    },
-                    bodyContent = {
-                        Column {
-                            Text(infoString, modifier = Modifier.padding(padd), style = tstyle)
-                            if (!model.current_usr["lastError"].isNullOrEmpty()) {
-                                Text("${model.current_usr["lastError"]}", modifier = Modifier.padding(padd), style = TextStyle(color = Color.Red))
-                            }
-                            /*
-                            if (isVertical) ScrollableColumn { UI_Content(model) }
-                            else ScrollableRow { UI_Content(model) }
-                            */
-                            UI_Content(model)
-                        }
+        Scaffold(
+                topBar = {
+                    myTopAppBar(model)
+                },
+                floatingActionButton = {
+                    if (model.current_state.value.equals("Выбрать пациента")) {
+                        FloatingActionButton(
+                                onClick = {
+                                    //model.current_usr = model.createUser()
+                                    //model.usrList.value!!.plus(model.current_usr)
+                                    val newuser = model.createUser()
+                                    model.addUser(newuser)
+                                    model.current_usr = newuser
+                                    model.current_state.postValue("Изменить")
+                                }
+                        ) { Icon(Icons.Filled.Add) }
+                    } else if (model.current_state.value.equals("Выбрать специальность")) {
+                        FloatingActionButton(
+                                onClick = {
+                                    model.current_state.postValue("Отложенные талоны")
+                                }
+                        ) { Icon(Icons.Filled.DateRange) }
                     }
-            )
-        //}
-    }
-    /*
-    if (model.isAdmin) model.current_usr.forEach { infoString += "${it.key}=${it.value}  " }
-    Scaffold(
-            topBar = {
-                myTopAppBar(model)
-            },
-            floatingActionButton = {
-                if (model.current_state.value.equals("Выбрать пациента")) {
-                    FloatingActionButton(
-                            onClick = {
-                                //model.current_usr = model.createUser()
-                                //model.usrList.value!!.plus(model.current_usr)
-                                val newuser = model.createUser()
-                                model.addUser(newuser)
-                                model.current_usr = newuser
-                                model.current_state.postValue("Изменить")
-                            }
-                    ) { Icon(Icons.Filled.Add) }
-                } else if (model.current_state.value.equals("Выбрать специальность")) {
-                    FloatingActionButton(
-                            onClick = {
-                                model.current_state.postValue("Отложенные талоны")
-                            }
-                    ) { Icon(Icons.Filled.DateRange) }
-                }
-            },
-            bodyContent = {
-                Column {
-                    Text(infoString, modifier = Modifier.padding(padd), style = tstyle)
-                    if (!model.current_usr["lastError"].isNullOrEmpty()) {
-                        Text("${model.current_usr["lastError"]}", modifier = Modifier.padding(padd), style = TextStyle(color = Color.Red))
-                    }
-                    /*
+                },
+                bodyContent = {
+                    Column {
+                        Text(infoString, modifier = Modifier.padding(padd), style = tstyle)
+                        if (!model.current_usr["lastError"].isNullOrEmpty()) {
+                            Text("${model.current_usr["lastError"]}", modifier = Modifier.padding(padd), style = TextStyle(color = Color.Red))
+                        }
+                        /*
                     if (isVertical) ScrollableColumn { UI_Content(model) }
                     else ScrollableRow { UI_Content(model) }
                     */
-                    UI_Content(model)
+                        UI_Content(model)
+                    }
                 }
-            }
-    )
-    */
+        )
+    }
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun UI_Content(model: AppViewModel) {
-
     if (model.wait.value!!) {
         Text(
                 "Запрос в регистратуру ${model.current_usr["L"]}",
@@ -379,5 +282,31 @@ fun UI_Content(model: AppViewModel) {
             "Выйти" -> Text("Выход")
             else -> Text("Under construction ...")
         }
+    }
+}
+
+@Composable
+fun TextSample() {
+    Card(shape = RoundedCornerShape(4.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(imageResource(id = R.drawable.redcross_small), modifier = Modifier.padding(8.dp))
+            Column(Modifier.preferredSizeIn(minWidth = 320.dp)) {
+                Text(
+                        text = "Welcome to USSR!",
+                        style = MaterialTheme.typography.h5,
+                        modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun DefaultPreview() {
+    MaterialTheme(
+            //colors = LightThemeColors
+    ) {
+        TextSample()
     }
 }
