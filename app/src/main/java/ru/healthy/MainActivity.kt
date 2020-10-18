@@ -1,5 +1,6 @@
 package ru.healthy
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -7,26 +8,21 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Observer
-import androidx.ui.tooling.preview.Preview
-import ru.healthy.R.color.*
 import java.io.File
 
 val padd = 8.dp
@@ -43,11 +39,15 @@ val colors = listOf(
 private var infoString = ""
 private var isVertical = true
 
+var cont: Context? = null
+
 class MainActivity : AppCompatActivity() {
     private val model: AppViewModel by viewModels()
 
     override fun onCreate(savedStateHandle: Bundle?) {
         super.onCreate(savedStateHandle)
+        cont = this.applicationContext
+
         File(filesDir, "usrlist.csv").createNewFile()
         model.usrfile = File(filesDir, "usrlist.csv")
 
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun myTopAppBar(model: AppViewModel) {
+fun myBar(model: AppViewModel) {
     TopAppBar(
             title = { Text("${model.current_state.value}", maxLines = 2) },
             navigationIcon = {
@@ -192,121 +192,68 @@ fun myTopAppBar(model: AppViewModel) {
     )
 }
 
-private val LightThemeColors = lightColors(
-        primary = Color(primaryColor),
-        primaryVariant = Color(primaryColor),
-        onPrimary = Color(primaryTextColor),
-        secondary = Color(secondaryColor),
-        secondaryVariant = Color(secondaryColor),
-        onSecondary = Color(secondaryTextColor),
-        error = Color.Red
-)
+@Composable
+fun myFab(model: AppViewModel) {
+    if (model.current_state.value.equals("Выбрать пациента")) {
+        FloatingActionButton(
+                onClick = {
+                    val newuser = model.createUser()
+                    model.addUser(newuser)
+                    model.current_usr = newuser
+                    model.current_state.postValue("Изменить")
+                }
+        ) { Icon(Icons.Filled.Add) }
+    } else if (model.current_state.value.equals("Выбрать специальность")) {
+        FloatingActionButton(
+                onClick = { model.current_state.postValue("Отложенные талоны") }
+        ) { Icon(Icons.Filled.DateRange) }
+    }
+}
 
-private val DarkThemeColors = darkColors(
-        primary = Color(primaryDarkColor),
-        primaryVariant = Color(primaryDarkColor),
-        onPrimary = Color.Black,
-        secondary = Color(secondaryDarkColor),
-        onSecondary = Color.Black,
-        error = Color.Red
-)
+@Composable
+fun myHead(model: AppViewModel) {
+    Text(infoString, modifier = Modifier.padding(padd), style = tstyle)
+    if (!model.current_usr["lastError"].isNullOrEmpty()) {
+        Text("${model.current_usr["lastError"]}", modifier = Modifier.padding(padd), style = TextStyle(color = Color.Red))
+    }
+    if (model.wait.value!!) {
+        Text("Запрос в регистратуру ${model.current_usr["L"]}", modifier = Modifier.padding(padd))
+        LinearProgressIndicator(modifier = Modifier.padding(padd).fillMaxWidth())
+    }
+}
+
+@Composable
+fun myContent(model: AppViewModel) {
+    when (model.current_state.value) {
+        "Search top 10" -> my10UsrEditCardBox(model)
+        "Выбрать пациента" -> myUsrCardBox(model)
+        "Изменить" -> myUsrEditCardBox(model)
+        "Выбрать клинику" -> myLpuCardBox(model)
+        "Проверка пациента" -> mySpecCardBox(model)
+        "Отложенные талоны" -> myHistCardBox(model)
+        "Выбрать специальность" -> mySpecCardBox(model)
+        "Выбрать врача" -> myDoctorCardBox(model)
+        "Выбрать талон" -> myTalonCardBox(model)
+        "Взять талон" -> myTalonGetCardBox(model)
+        "Отменить талон" -> myTalonDelCardBox(model)
+        "Информация" -> myHelp(model)
+        "Выйти" -> Text("Выход")
+        else -> Text("Under construction ...")
+    }
+}
 
 @Composable
 fun UI_(model: AppViewModel) {
-    MaterialTheme(
-            //colors = if (isSystemInDarkTheme()) DarkThemeColors else LightThemeColors,
-    ) {
+    Test2Theme {
         Scaffold(
-                topBar = {
-                    myTopAppBar(model)
-                },
-                floatingActionButton = {
-                    if (model.current_state.value.equals("Выбрать пациента")) {
-                        FloatingActionButton(
-                                onClick = {
-                                    //model.current_usr = model.createUser()
-                                    //model.usrList.value!!.plus(model.current_usr)
-                                    val newuser = model.createUser()
-                                    model.addUser(newuser)
-                                    model.current_usr = newuser
-                                    model.current_state.postValue("Изменить")
-                                }
-                        ) { Icon(Icons.Filled.Add) }
-                    } else if (model.current_state.value.equals("Выбрать специальность")) {
-                        FloatingActionButton(
-                                onClick = {
-                                    model.current_state.postValue("Отложенные талоны")
-                                }
-                        ) { Icon(Icons.Filled.DateRange) }
-                    }
-                },
+                topBar = { myBar(model) },
+                floatingActionButton = { myFab(model) },
                 bodyContent = {
                     Column {
-                        Text(infoString, modifier = Modifier.padding(padd), style = tstyle)
-                        if (!model.current_usr["lastError"].isNullOrEmpty()) {
-                            Text("${model.current_usr["lastError"]}", modifier = Modifier.padding(padd), style = TextStyle(color = Color.Red))
-                        }
-                        /*
-                    if (isVertical) ScrollableColumn { UI_Content(model) }
-                    else ScrollableRow { UI_Content(model) }
-                    */
-                        UI_Content(model)
+                        myHead(model)
+                        myContent(model)
                     }
                 }
         )
-    }
-}
-
-@Composable
-fun UI_Content(model: AppViewModel) {
-    if (model.wait.value!!) {
-        Text(
-                "Запрос в регистратуру ${model.current_usr["L"]}",
-                modifier = Modifier.padding(padd)
-        )
-        LinearProgressIndicator(modifier = Modifier.padding(padd).fillMaxWidth())
-    } else {
-        when (model.current_state.value) {
-            "Search top 10" -> my10UsrEditCardBox(model)
-            "Выбрать пациента" -> myUsrCardBox(model)
-            "Изменить" -> myUsrEditCardBox(model)
-            "Выбрать клинику" -> myLpuCardBox(model)
-            "Проверка пациента" -> mySpecCardBox(model)
-            "Отложенные талоны" -> myHistCardBox(model)
-            "Выбрать специальность" -> mySpecCardBox(model)
-            "Выбрать врача" -> myDoctorCardBox(model)
-            "Выбрать талон" -> myTalonCardBox(model)
-            "Взять талон" -> myTalonGetCardBox(model)
-            "Отменить талон" -> myTalonDelCardBox(model)
-            "Информация" -> myHelp(model)
-            "Выйти" -> Text("Выход")
-            else -> Text("Under construction ...")
-        }
-    }
-}
-
-@Composable
-fun TextSample() {
-    Card(shape = RoundedCornerShape(4.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(imageResource(id = R.drawable.redcross_small), modifier = Modifier.padding(8.dp))
-            Column(Modifier.preferredSizeIn(minWidth = 320.dp)) {
-                Text(
-                        text = "Welcome to USSR!",
-                        style = MaterialTheme.typography.h5,
-                        modifier = Modifier.padding(start = 16.dp)
-                )
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    MaterialTheme(
-            //colors = LightThemeColors
-    ) {
-        TextSample()
     }
 }
