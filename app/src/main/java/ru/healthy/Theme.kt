@@ -16,37 +16,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getColor
 
-private val DarkColorPalette = darkColors(
-    //primary = primaryColor,
-    //primaryVariant = primaryDarkColor,
-    //secondary = secondaryColor
-)
-
 val shapes = Shapes(
-    small = RoundedCornerShape(4.dp),
-    medium = RoundedCornerShape(4.dp),
-    large = RoundedCornerShape(0.dp)
+        small = RoundedCornerShape(4.dp),
+        medium = RoundedCornerShape(8.dp),
+        large = RoundedCornerShape(16.dp)
 )
 
-// Set of Material typography styles to start with
 val typography = Typography(
-    body1 = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
-    /* Other default text styles to override
-button = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.W500,
-    fontSize = 14.sp
-),
-caption = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Normal,
-    fontSize = 12.sp
-)
-*/
+        body1 = TextStyle(
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp
+        )
+   /* Other default text styles to override
+        button = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.W500,
+            fontSize = 14.sp
+        ),
+        caption = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Normal,
+            fontSize = 12.sp
+        )
+    body1 body2 button caption
+    h1 h2 h3 h4 h5 h6
+    overline subtitle1 subtitle2
+    */
 )
 
 
@@ -55,50 +51,43 @@ fun HexToColor(hex: String): Color {
     hex = hex.replace("#", "")
     when (hex.length) {
         6 -> return Color(
-            Integer.valueOf(hex.substring(0, 2), 16),
-            Integer.valueOf(hex.substring(2, 4), 16),
-            Integer.valueOf(hex.substring(4, 6), 16)
+                Integer.valueOf(hex.substring(0, 2), 16),
+                Integer.valueOf(hex.substring(2, 4), 16),
+                Integer.valueOf(hex.substring(4, 6), 16)
         )
         8 -> return Color(
-            Integer.valueOf(hex.substring(0, 2), 16),
-            Integer.valueOf(hex.substring(2, 4), 16),
-            Integer.valueOf(hex.substring(4, 6), 16),
-            Integer.valueOf(hex.substring(6, 8), 16)
+                Integer.valueOf(hex.substring(0, 2), 16),
+                Integer.valueOf(hex.substring(2, 4), 16),
+                Integer.valueOf(hex.substring(4, 6), 16),
+                Integer.valueOf(hex.substring(6, 8), 16)
         )
     }
     return Color(0)
 }
 
-private val LightColorPalette = lightColors(
-    //primary = Color(android.graphics.Color.parseColor("#c2185b")),
-    primary = Color(getColor(cont!!,R.color.primaryColor)), //цвет Button и подписей
-    //onPrimary = Color.Yellow,
-    primaryVariant = Color(getColor(cont!!,R.color.primaryDarkColor)),
-    secondary = Color(getColor(cont!!,R.color.secondaryColor)), //цвет FAB и RadioButton
-    //onSecondary = Color.Yellow,
-    secondaryVariant = Color(getColor(cont!!,R.color.secondaryDarkColor)), //цвет Switch
-    //secondaryVariant = Color(R.attr.colorSecondaryVariant), //цвет Switch
+private val LightPalette = lightColors(
+        //primary = Color(android.graphics.Color.parseColor("#c2185b")),
+        primary = Color(getColor(context!!, R.color.primaryColor)), //цвет Button и подписей
+        primaryVariant = Color(getColor(context!!, R.color.primaryDarkColor)), //цвет StatusBar
+        secondary = Color(getColor(context!!, R.color.secondaryColor)), //цвет FAB и RadioButton
+        secondaryVariant = Color(getColor(context!!, R.color.secondaryDarkColor)), //цвет Switch
+        surface = Color(getColor(context!!, R.color.secondaryLightColor))
+        //background = Color(getColor(context!!, R.color.secondaryLightColor)) //цвет полотна приложения
+)
 
-    //background = Color.Red,
-    //onBackground = Color.Yellow,
-    //surface = Color.Red,
-    //onSurface = Color.Yellow,
-    //error = Color.Red,
-    //onError = Color.Green
+private val DarkPalette = darkColors(
+        primary = Color.Gray, //цвет Button и подписей
+        primaryVariant = Color.DarkGray, //цвет StatusBar
+        secondary = Color.LightGray, //цвет FAB и RadioButton
+        surface = Color.LightGray //в темной теме цвет ActionBar
 )
 
 @Composable
-fun Test2Theme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
-
+fun myTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     MaterialTheme(
-        colors = colors,
-        typography = typography,
-        shapes = shapes,
-        content = content
+            colors = if (dark) {DarkPalette} else {LightPalette},
+            typography = typography,
+            shapes = shapes,
+            content = content
     )
 }

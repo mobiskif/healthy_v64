@@ -4,11 +4,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.material.Button
-import androidx.compose.material.IconButton
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
@@ -19,9 +16,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.NonCancellable.children
 
 @Composable
-fun myUsrReadFields(item: Map<String, String>) {
+fun myUsrFields(item: Map<String, String>) {
     Text("${item["F"]} ${item["I"]} ${item["O"]}", modifier = tmod, style = tstyle)
     Text("Дата рождения: ${item["D"]}", modifier = tmod, style = tstyle)
     Text("Район: ${item["R"]}", modifier = tmod, style = tstyle)
@@ -29,7 +27,7 @@ fun myUsrReadFields(item: Map<String, String>) {
 }
 
 @Composable
-fun myLpuReadFields(item: Map<String, String>) {
+fun myLpuFields(item: Map<String, String>) {
     if ("${item["ErrorDescription"]}".length>4) {
         Text("${item["ErrorDescription"]}", modifier = tmod, style = tstyle)
     } else {
@@ -295,22 +293,21 @@ fun mySpecCardBox(model: AppViewModel) {
 @Composable
 fun myLpuCardBox(model: AppViewModel) {
     model.lpuList.value?.forEach { it ->
-        val index = (colors.size * Math.random()).toInt()
         Box(
-            modifier = Modifier.padding(padd).fillMaxWidth()
-                .wrapContentWidth(Alignment.CenterHorizontally).background(
-                    color = colors[index % colors.size], shape = RoundedCornerShape(padd)
-                ).clickable(onClick = {
-                    var usr = model.current_usr.toMutableMap()
-                    usr["iL"] = it["IdLPU"].toString()
-                    usr["L"] = it["Name"].toString()
-                    model.current_usr = usr
-                    model.readPatID()
-                    model.current_state.postValue("Проверка пациента")
-                })
+                modifier = Modifier.padding(padd).fillMaxWidth()
+                        .wrapContentWidth(Alignment.CenterHorizontally)
+                        .background(color = MaterialTheme.colors.surface, shape = MaterialTheme.shapes.medium)
+                        .clickable(onClick = {
+                            var usr = model.current_usr.toMutableMap()
+                            usr["iL"] = it["IdLPU"].toString()
+                            usr["L"] = it["Name"].toString()
+                            model.current_usr = usr
+                            model.readPatID()
+                            model.current_state.postValue("Проверка пациента")
+                        })
         ) {
             Column(modifier = Modifier.padding(padd)) {
-                myLpuReadFields(it)
+                myLpuFields(it)
             }
         }
     }
@@ -331,7 +328,7 @@ fun myUsrCardBox(model: AppViewModel) {
                 })
         ) {
             Column(modifier = Modifier.padding(padd)) {
-                myUsrReadFields(it)
+                myUsrFields(it)
                 IconButton(onClick = {
                     model.current_usr = it
                     model.current_state.postValue("Изменить")

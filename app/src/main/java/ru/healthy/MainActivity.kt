@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Observer
+import androidx.ui.tooling.preview.Preview
 import java.io.File
 
 val padd = 8.dp
@@ -39,14 +40,15 @@ val colors = listOf(
 private var infoString = ""
 private var isVertical = true
 
-var cont: Context? = null
+var context: Context? = null
 
 class MainActivity : AppCompatActivity() {
     private val model: AppViewModel by viewModels()
+    //private val model: AppViewModel = AppViewModel(true)
 
     override fun onCreate(savedStateHandle: Bundle?) {
         super.onCreate(savedStateHandle)
-        cont = this.applicationContext
+        context = this.applicationContext
 
         File(filesDir, "usrlist.csv").createNewFile()
         model.usrfile = File(filesDir, "usrlist.csv")
@@ -186,7 +188,6 @@ fun myBar(model: AppViewModel) {
                 IconButton(onClick = { model.current_state.postValue("Выйти") }) {
                     Icon(Icons.Filled.ExitToApp)
                 }
-                //IconButton(onClick = { model.isAdmin = !model.isAdmin }) { Icon(Icons.Filled.MoreVert) }
                 //myTopDropDownMenu(model)
             }
     )
@@ -202,11 +203,13 @@ fun myFab(model: AppViewModel) {
                     model.current_usr = newuser
                     model.current_state.postValue("Изменить")
                 }
-        ) { Icon(Icons.Filled.Add) }
+        ) {
+            Icon(Icons.Filled.Add)
+        }
     } else if (model.current_state.value.equals("Выбрать специальность")) {
-        FloatingActionButton(
-                onClick = { model.current_state.postValue("Отложенные талоны") }
-        ) { Icon(Icons.Filled.DateRange) }
+        FloatingActionButton(onClick = { model.current_state.postValue("Отложенные талоны") }) {
+            Icon(Icons.Filled.DateRange)
+        }
     }
 }
 
@@ -244,7 +247,7 @@ fun myContent(model: AppViewModel) {
 
 @Composable
 fun UI_(model: AppViewModel) {
-    Test2Theme {
+    myTheme {
         Scaffold(
                 topBar = { myBar(model) },
                 floatingActionButton = { myFab(model) },
@@ -257,3 +260,23 @@ fun UI_(model: AppViewModel) {
         )
     }
 }
+
+
+@Preview()
+@Composable
+fun DefaultPreview() {
+    val mod = AppViewModel(true)
+    //myTheme(false) {
+        Scaffold(
+                topBar = { myBar(mod) },
+                floatingActionButton = { myFab(mod) },
+                bodyContent = {
+                    Column {
+                        myHead(mod)
+                        myContent(mod)
+                    }
+                }
+        )
+    //}
+}
+
