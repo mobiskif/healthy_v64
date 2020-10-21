@@ -12,6 +12,7 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,22 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.ui.tooling.preview.Preview
 import java.io.File
 
-val padd = 8.dp
-val tmod = Modifier.padding(0.dp, 0.dp, 0.dp, padd)
-val tstyle = TextStyle(fontSize = 18.sp)
-val colors = listOf(
-        Color(0xFFffd7d7.toInt()),
-        Color(0xFFffe9d6.toInt()),
-        Color(0xFFfffbd0.toInt()),
-        Color(0xFFe3ffd9.toInt()),
-        Color(0xFFd0fff8.toInt())
-)
 
 private var infoString = ""
 private var isVertical = true
@@ -44,7 +38,6 @@ var context: Context? = null
 
 class MainActivity : AppCompatActivity() {
     private val model: AppViewModel by viewModels()
-    //private val model: AppViewModel = AppViewModel(true)
 
     override fun onCreate(savedStateHandle: Bundle?) {
         super.onCreate(savedStateHandle)
@@ -246,37 +239,40 @@ fun myContent(model: AppViewModel) {
 }
 
 @Composable
+fun myScaffold(model: AppViewModel) {
+    Scaffold(
+            topBar = { myBar(model) },
+            floatingActionButton = { myFab(model) }
+    ) {
+        Column {
+            myHead(model)
+            myContent(model)
+        }
+    }
+}
+
+@Composable
 fun UI_(model: AppViewModel) {
     myTheme {
-        Scaffold(
-                topBar = { myBar(model) },
-                floatingActionButton = { myFab(model) },
-                bodyContent = {
-                    Column {
-                        myHead(model)
-                        myContent(model)
-                    }
-                }
-        )
+        myScaffold(model)
     }
 }
 
 
-@Preview()
+@Preview(showBackground = true, showDecoration = true)
 @Composable
 fun DefaultPreview() {
-    val mod = AppViewModel(true)
-    //myTheme(false) {
-        Scaffold(
-                topBar = { myBar(mod) },
-                floatingActionButton = { myFab(mod) },
-                bodyContent = {
-                    Column {
-                        myHead(mod)
-                        myContent(mod)
-                    }
-                }
-        )
-    //}
+    val model = AppViewModel(true)
+    myTheme(false) {
+        myScaffold(model)
+    }
 }
 
+@Preview(showBackground = true, showDecoration = true)
+@Composable
+fun DarkPreview() {
+    val model = AppViewModel(true)
+    myTheme(true) {
+        myScaffold(model)
+    }
+}
