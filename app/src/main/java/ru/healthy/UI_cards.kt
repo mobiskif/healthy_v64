@@ -18,55 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun myUsrFields(item: Map<String, String>) {
-    Text("${item["F"]} ${item["I"]} ${item["O"]}", modifier = tmod, style = tstyle)
-    Text("Дата рождения: ${item["D"]}", modifier = tmod, style = tstyle)
-    Text("Район: ${item["R"]}", modifier = tmod, style = tstyle)
-    //Text("${item["id"]}", modifier = tmod)
-}
-
-@Composable
-fun myLpuFields(item: Map<String, String>) {
-    if ("${item["ErrorDescription"]}".length > 4) {
-        Text("${item["ErrorDescription"]}", modifier = tmod, style = tstyle)
+fun myTalonFields(it: Map<String, String>) {
+    if ("${it["ErrorDescription"]}".length > 4) {
+        Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
     } else {
-        Text("${item["Name"]}", modifier = tmod, style = tstyle)
-        Text("Система: ${item["Description"]}", modifier = tmod)
-    }
-}
-
-@Composable
-fun mySpecFields(item: Map<String, String>) {
-    if ("${item["ErrorDescription"]}".length > 4) {
-        Text("${item["ErrorDescription"]}", modifier = tmod, style = tstyle)
-    } else {
-        Text("${item["NameSpesiality"]}", modifier = tmod, style = tstyle)
-        Text("Талонов: ${item["CountFreeParticipantIE"]}", modifier = tmod, style = tstyle)
-        Text("Резерв: ${item["CountFreeTicket"]}", modifier = tmod)
-    }
-}
-
-@Composable
-fun myDoctorFields(item: Map<String, String>) {
-    if ("${item["ErrorDescription"]}".length > 4) {
-        Text("${item["ErrorDescription"]}", modifier = tmod, style = tstyle)
-    } else {
-        Text("${item["Name"]}", modifier = tmod, style = tstyle)
-        Text("Талонов: ${item["CountFreeTicket"]}", modifier = tmod, style = tstyle)
-        Text("Участок: ${item["AriaNumber"]}", modifier = tmod)
-        //Text("${item["NearestDate"]}".dropLast(9), modifier = tmod)
-        //Text("${item["LastDate"]}".dropLast(9), modifier = tmod)
-    }
-}
-
-@Composable
-fun myTalonFields(item: Map<String, String>) {
-    if ("${item["ErrorDescription"]}".length > 4) {
-        Text("${item["ErrorDescription"]}", modifier = tmod, style = tstyle)
-    } else {
-        Text("Талон № ${item["IdAppointment"]}")
-        Text("${if (!item["Name"].isNullOrEmpty()) item["Name"] else ""}")
-        Text("${item["NameSpesiality"]} ${item["VisitEnd"]} ${item["VisitStart"]}", modifier = tmod, style = tstyle)
+        Text("Талон № ${it["IdAppointment"]}")
+        Text("${if (!it["Name"].isNullOrEmpty()) it["Name"] else ""}")
+        Text("${it["NameSpesiality"]} ${it["VisitEnd"]} ${it["VisitStart"]}", modifier = tmod, style = tstyle)
         //if (!item["Name"].isNullOrEmpty()) Text("${item["Name"]}", modifier = tmod, style = tstyle)
     }
 }
@@ -157,36 +115,23 @@ fun myUsrEditCardBox(model: AppViewModel) {
 
 @Composable
 fun my10UsrEditCardBox(model: AppViewModel) {
-    val index = (colors.size * Math.random()).toInt()
-    Box(
-            modifier = Modifier.padding(padd).fillMaxWidth()
-                    .wrapContentWidth(Alignment.CenterHorizontally).background(
-                            color = colors[index % colors.size], shape = RoundedCornerShape(padd)
-                    )
-    ) {
-        Column(modifier = Modifier.padding(padd)) {
-            my10UsrEditFields(model)
-        }
+    ScrollableColumn(modifier = Modifier.padding(padd)) {
+        my10UsrEditFields(model)
     }
 }
 
 @Composable
 fun myTalonCardBox(model: AppViewModel) {
     model.talonList.value?.forEach { it ->
-        val index = (colors.size * Math.random()).toInt()
-        Box(
-                modifier = Modifier.padding(padd).fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally).background(
-                                color = colors[index % colors.size], shape = RoundedCornerShape(padd)
-                        ).clickable(onClick = {
-                            var usr = model.current_usr.toMutableMap()
-                            usr["IdAppointment"] = it["IdAppointment"].toString()
-                            usr["VisitStart"] = it["VisitStart"].toString()
-                            usr["VisitEnd"] = it["VisitEnd"].toString()
-                            model.current_usr = usr
-                            model.current_state.postValue("Взять талон")
-                        })
-        ) {
+        val onclick = {
+            var usr = model.current_usr.toMutableMap()
+            usr["IdAppointment"] = it["IdAppointment"].toString()
+            usr["VisitStart"] = it["VisitStart"].toString()
+            usr["VisitEnd"] = it["VisitEnd"].toString()
+            model.current_usr = usr
+            model.current_state.postValue("Взять талон")
+        }
+        Box(modifier = myMod(onclick)) {
             Column(modifier = Modifier.padding(padd)) {
                 myTalonFields(it)
             }
@@ -197,22 +142,25 @@ fun myTalonCardBox(model: AppViewModel) {
 @Composable
 fun myDoctorCardBox(model: AppViewModel) {
     model.doctorList.value?.forEach { it ->
-        val index = (colors.size * Math.random()).toInt()
-        Box(
-                modifier = Modifier.padding(padd).fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally).background(
-                                color = colors[index % colors.size], shape = RoundedCornerShape(padd)
-                        ).clickable(onClick = {
-                            var usr = model.current_usr.toMutableMap()
-                            usr["IdDoc"] = it["IdDoc"].toString()
-                            usr["DoctorName"] = it["Name"].toString()
-                            model.current_usr = usr
-                            model.readTalonList()
-                            model.current_state.postValue("Выбрать талон")
-                        })
-        ) {
+        val onclick = {
+            var usr = model.current_usr.toMutableMap()
+            usr["IdDoc"] = it["IdDoc"].toString()
+            usr["DoctorName"] = it["Name"].toString()
+            model.current_usr = usr
+            model.readTalonList()
+            model.current_state.postValue("Выбрать талон")
+        }
+        Box(modifier = myMod(onclick)) {
             Column(modifier = Modifier.padding(padd)) {
-                myDoctorFields(it)
+                if ("${it["ErrorDescription"]}".length > 4) {
+                    Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
+                } else {
+                    Text("${it["Name"]}", modifier = tmod, style = tstyle)
+                    Text("Талонов: ${it["CountFreeTicket"]}", modifier = tmod, style = tstyle)
+                    Text("Участок: ${it["AriaNumber"]}", modifier = tmod)
+                    //Text("${item["NearestDate"]}".dropLast(9), modifier = tmod)
+                    //Text("${item["LastDate"]}".dropLast(9), modifier = tmod)
+                }
             }
         }
     }
@@ -223,21 +171,17 @@ fun myHistCardBox(model: AppViewModel) {
     Text("Отложенные в ${model.current_usr["L"]} талоны:", modifier = Modifier.padding(padd))
     model.historyList.value?.forEach { it ->
         //val index = (colors.size * Math.random()).toInt()
-        Box(
-                modifier = Modifier.padding(padd).fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally).background(
-                                color = Color.Green, shape = RoundedCornerShape(padd)
-                        ).clickable(onClick = {
-                            var usr = model.current_usr.toMutableMap()
-                            usr["IdAppointment"] = it["IdAppointment"].toString()
-                            usr["VisitStart"] = it["VisitStart"].toString()
-                            usr["VisitEnd"] = it["VisitEnd"].toString()
-                            usr["Name"] = it["Name"].toString()
-                            usr["NameSpesiality"] = it["NameSpesiality"].toString()
-                            model.current_usr = usr
-                            model.current_state.postValue("Отменить талон")
-                        })
-        ) {
+        var onclick = {
+            var usr = model.current_usr.toMutableMap()
+            usr["IdAppointment"] = it["IdAppointment"].toString()
+            usr["VisitStart"] = it["VisitStart"].toString()
+            usr["VisitEnd"] = it["VisitEnd"].toString()
+            usr["Name"] = it["Name"].toString()
+            usr["NameSpesiality"] = it["NameSpesiality"].toString()
+            model.current_usr = usr
+            model.current_state.postValue("Отменить талон")
+        }
+        Box(modifier = myMod(onclick)) {
             Column(modifier = Modifier.padding(padd)) {
                 myTalonFields(it)
             }
@@ -251,44 +195,23 @@ fun mySpecCardBox(model: AppViewModel) {
     Text("${item?.get("Address")} ${item?.get("Phone")} ${item?.get("Email")}", modifier = Modifier.padding(padd))
     model.specList.value?.forEach { it ->
         val index = (colors.size * Math.random()).toInt()
-        Box(
-                modifier = Modifier.padding(padd).fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally).background(
-                                color = colors[index % colors.size], shape = RoundedCornerShape(padd)
-                        ).clickable(onClick = {
-                            var usr = model.current_usr.toMutableMap()
-                            usr["IdSpesiality"] = it["IdSpesiality"].toString()
-                            usr["NameSpesiality"] = it["NameSpesiality"].toString()
-                            model.current_usr = usr
-                            model.readDocList()
-                            model.current_state.postValue("Выбрать врача")
-                        })
-        ) {
-            Column(modifier = Modifier.padding(padd)) {
-                mySpecFields(it)
-            }
+        val onclick = {
+            var usr = model.current_usr.toMutableMap()
+            usr["IdSpesiality"] = it["IdSpesiality"].toString()
+            usr["NameSpesiality"] = it["NameSpesiality"].toString()
+            model.current_usr = usr
+            model.readDocList()
+            model.current_state.postValue("Выбрать врача")
         }
-    }
-}
-
-@Composable
-fun myLpuCardBox(model: AppViewModel) {
-    model.lpuList.value?.forEach { it ->
-        Box(
-                modifier = Modifier.padding(padd).fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally)
-                        .background(color = MaterialTheme.colors.surface, shape = MaterialTheme.shapes.medium)
-                        .clickable(onClick = {
-                            var usr = model.current_usr.toMutableMap()
-                            usr["iL"] = it["IdLPU"].toString()
-                            usr["L"] = it["Name"].toString()
-                            model.current_usr = usr
-                            model.readPatID()
-                            model.current_state.postValue("Проверка пациента")
-                        })
-        ) {
+        Box(modifier = myMod(onclick)) {
             Column(modifier = Modifier.padding(padd)) {
-                myLpuFields(it)
+                if ("${it["ErrorDescription"]}".length > 4) {
+                    Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
+                } else {
+                    Text("${it["NameSpesiality"]}", modifier = tmod, style = tstyle)
+                    Text("Талонов: ${it["CountFreeParticipantIE"]}", modifier = tmod, style = tstyle)
+                    Text("Резерв: ${it["CountFreeTicket"]}", modifier = tmod)
+                }
             }
         }
     }
@@ -304,6 +227,36 @@ fun myMod(oncl: () -> Unit): Modifier {
 }
 
 @Composable
+fun myText(text: String) {
+    Text(text, modifier = tmod, style = tstyle)
+}
+
+
+@Composable
+fun myLpuCardBox(model: AppViewModel) {
+    model.lpuList.value?.forEach { it ->
+        var onclick = {
+            var usr = model.current_usr.toMutableMap()
+            usr["iL"] = it["IdLPU"].toString()
+            usr["L"] = it["Name"].toString()
+            model.current_usr = usr
+            model.readPatID()
+            model.current_state.postValue("Проверка пациента")
+        }
+        Box(modifier = myMod(onclick)) {
+            Column(modifier = Modifier.padding(padd)) {
+                if ("${it["ErrorDescription"]}".length > 4) {
+                    Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
+                } else {
+                    Text("${it["Name"]}", modifier = tmod, style = tstyle)
+                    Text("Система: ${it["Description"]}", modifier = tmod)
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun myUsrCardBox(model: AppViewModel) {
     model.usrList.value?.forEach { it ->
         var onclick = {
@@ -313,7 +266,9 @@ fun myUsrCardBox(model: AppViewModel) {
         }
         Box(modifier = myMod(onclick)) {
             Column(modifier = Modifier.padding(padd)) {
-                myUsrFields(it)
+                myText("${it["F"]} ${it["I"]} ${it["O"]}")
+                myText("Дата рождения: ${it["D"]}")
+                myText("Район: ${it["R"]}")
                 IconButton(onClick = {
                     model.current_usr = it
                     model.current_state.postValue("Изменить")
