@@ -16,7 +16,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.NonCancellable.children
 
 @Composable
 fun myUsrFields(item: Map<String, String>) {
@@ -151,19 +150,6 @@ fun myUsrEditFields(model: AppViewModel) {
 
 @Composable
 fun myUsrEditCardBox(model: AppViewModel) {
-    /*
-    val index = (colors.size * Math.random()).toInt()
-    Box(
-        modifier = Modifier.padding(padd).fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally).background(
-                color = colors[index % colors.size], shape = RoundedCornerShape(padd)
-            )
-    ) {
-        Column(modifier = Modifier.padding(padd)) {
-            myUsrEditFields(model)
-        }
-    }
-     */
     ScrollableColumn(modifier = Modifier.padding(padd)) {
         myUsrEditFields(model)
     }
@@ -309,19 +295,23 @@ fun myLpuCardBox(model: AppViewModel) {
 }
 
 @Composable
+fun myMod(oncl: () -> Unit): Modifier {
+    return Modifier.padding(padd)
+            .fillMaxWidth()
+            .wrapContentWidth(Alignment.CenterHorizontally)
+            .background(color = MaterialTheme.colors.surface, shape = MaterialTheme.shapes.medium)
+            .clickable(onClick = oncl)
+}
+
+@Composable
 fun myUsrCardBox(model: AppViewModel) {
     model.usrList.value?.forEach { it ->
-        val index = (colors.size * Math.random()).toInt()
-        Box(
-                modifier = Modifier.padding(padd).fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally).background(
-                                color = colors[index % colors.size], shape = RoundedCornerShape(padd)
-                        ).clickable(onClick = {
-                            model.current_usr = it
-                            model.readLpuList()
-                            model.current_state.postValue("Выбрать клинику")
-                        })
-        ) {
+        var onclick = {
+            model.current_usr = it
+            model.readLpuList()
+            model.current_state.postValue("Выбрать клинику")
+        }
+        Box(modifier = myMod(onclick)) {
             Column(modifier = Modifier.padding(padd)) {
                 myUsrFields(it)
                 IconButton(onClick = {
