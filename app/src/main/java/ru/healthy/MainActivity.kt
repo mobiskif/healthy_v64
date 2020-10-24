@@ -73,8 +73,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || window.attributes.width > window.attributes.height) isVertical = false
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || window.attributes.width < window.attributes.height) isVertical = true
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || window.attributes.width > window.attributes.height) isVertical =
+            false
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || window.attributes.width < window.attributes.height) isVertical =
+            true
         setContent { UI_(model) }
     }
 
@@ -109,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         usr["IdPat"] = it["IdPat"].toString()
         if ("${it["ErrorDescription"]}".length > 4) {
             usr["lastError"] =
-                    "${it["ErrorDescription"]}. Запись в ${model.current_usr["L"]} невозможна."
+                "${it["ErrorDescription"]}. Запись в ${model.current_usr["L"]} невозможна."
         }
         model.current_usr = usr
         model.readHistList()
@@ -122,7 +124,7 @@ class MainActivity : AppCompatActivity() {
         if ("${it["ErrorDescription"]}".length > 4) {
             val usr = model.current_usr.toMutableMap()
             usr["lastError"] =
-                    "${it["ErrorDescription"]}. Запись в ${model.current_usr["L"]} невозможна."
+                "${it["ErrorDescription"]}. Запись в ${model.current_usr["L"]} невозможна."
             model.current_usr = usr
         }
         Toast.makeText(this, "${model.talonState.value}", Toast.LENGTH_SHORT).show()
@@ -171,21 +173,21 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun myBar(model: AppViewModel) {
     TopAppBar(
-            title = { Text("${model.current_state.value}", maxLines = 2) },
-            navigationIcon = {
-                IconButton(onClick = { model.current_state.postValue("Выбрать пациента") }) {
-                    Icon(Icons.Filled.Person)
-                }
-            },
-            actions = {
-                IconButton(onClick = { model.current_state.postValue("Информация") }) {
-                    Icon(Icons.Filled.Info)
-                }
-                IconButton(onClick = { model.current_state.postValue("Выйти") }) {
-                    Icon(Icons.Filled.ExitToApp)
-                }
-                //myTopDropDownMenu(model)
+        title = { Text("${model.current_state.value}", maxLines = 2) },
+        navigationIcon = {
+            IconButton(onClick = { model.current_state.postValue("Выбрать пациента") }) {
+                Icon(Icons.Filled.Person)
             }
+        },
+        actions = {
+            IconButton(onClick = { model.current_state.postValue("Информация") }) {
+                Icon(Icons.Filled.Info)
+            }
+            IconButton(onClick = { model.current_state.postValue("Выйти") }) {
+                Icon(Icons.Filled.ExitToApp)
+            }
+            //myTopDropDownMenu(model)
+        }
     )
 }
 
@@ -193,12 +195,12 @@ fun myBar(model: AppViewModel) {
 fun myFab(model: AppViewModel) {
     if (model.current_state.value.equals("Выбрать пациента")) {
         FloatingActionButton(
-                onClick = {
-                    val newuser = model.createUser()
-                    model.addUser(newuser)
-                    model.current_usr = newuser
-                    model.current_state.postValue("Изменить")
-                }
+            onClick = {
+                val newuser = model.createUser()
+                model.addUser(newuser)
+                model.current_usr = newuser
+                model.current_state.postValue("Изменить")
+            }
         ) {
             Icon(Icons.Filled.Add)
         }
@@ -213,7 +215,11 @@ fun myFab(model: AppViewModel) {
 fun myHead(model: AppViewModel) {
     Text(infoString, modifier = Modifier.padding(padd), style = tstyle)
     if (!model.current_usr["lastError"].isNullOrEmpty()) {
-        Text("${model.current_usr["lastError"]}", modifier = Modifier.padding(padd), style = TextStyle(color = Color.Red))
+        Text(
+            "${model.current_usr["lastError"]}",
+            modifier = Modifier.padding(padd),
+            style = TextStyle(color = Color.Red)
+        )
     }
     if (model.wait.value!!) {
         Text("Запрос в регистратуру ${model.current_usr["L"]}", modifier = Modifier.padding(padd))
@@ -244,14 +250,12 @@ fun myContent(model: AppViewModel) {
 @Composable
 fun myScaffold(model: AppViewModel) {
     Scaffold(
-            topBar = { myBar(model) },
-            floatingActionButton = { myFab(model) }
+        topBar = { myBar(model) },
+        floatingActionButton = { myFab(model) }
     ) {
         Column {
             myHead(model)
-            ScrollableColumn {
-                myContent(model)
-            }
+            myContent(model)
         }
     }
 }
