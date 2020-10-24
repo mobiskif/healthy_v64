@@ -4,13 +4,11 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -138,7 +136,7 @@ fun myTalonCardBox(model: AppViewModel) {
                 model.current_usr = usr
                 model.current_state.postValue("Взять талон")
             }
-            Box(modifier = myMod(onclick)) {
+            Box(modifier = mod_card(onclick)) {
                 Column(modifier = Modifier.padding(padd)) {
                     myTalonFields(it)
                 }
@@ -159,7 +157,7 @@ fun myDoctorCardBox(model: AppViewModel) {
                 model.readTalonList()
                 model.current_state.postValue("Выбрать талон")
             }
-            Box(modifier = myMod(onclick)) {
+            Box(modifier = mod_card(onclick)) {
                 Column(modifier = Modifier.padding(padd)) {
                     if ("${it["ErrorDescription"]}".length > 4) {
                         Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
@@ -192,7 +190,7 @@ fun myHistCardBox(model: AppViewModel) {
                 model.current_usr = usr
                 model.current_state.postValue("Отменить талон")
             }
-            Box(modifier = myMod(onclick)) {
+            Box(modifier = mod_card(onclick)) {
                 Column(modifier = Modifier.padding(padd)) {
                     myTalonFields(it)
                 }
@@ -219,7 +217,7 @@ fun mySpecCardBox(model: AppViewModel) {
                 model.readDocList()
                 model.current_state.postValue("Выбрать врача")
             }
-            Box(modifier = myMod(onclick)) {
+            Box(modifier = mod_card(onclick)) {
                 Column(modifier = Modifier.padding(padd)) {
                     if ("${it["ErrorDescription"]}".length > 4) {
                         Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
@@ -237,14 +235,15 @@ fun mySpecCardBox(model: AppViewModel) {
         }
 }
 
-@Composable
-fun myMod(oncl: () -> Unit): Modifier {
-    return Modifier.padding(padd)
-        .fillMaxWidth()
-        .wrapContentWidth(Alignment.CenterHorizontally)
-        .background(color = MaterialTheme.colors.surface, shape = MaterialTheme.shapes.medium)
-        .clickable(onClick = oncl)
-}
+
+/*
+val mod_card = Modifier
+    .padding(8.dp)
+    .fillMaxWidth()
+    //.wrapContentWidth(Alignment.CenterHorizontally)
+    //.background(color = Color.Green, shape = shapes.small)
+    .border(1.dp, Color.LightGray, shapes.small)
+ */
 
 @Composable
 fun myText(text: String) {
@@ -264,7 +263,7 @@ fun myLpuCardBox(model: AppViewModel) {
                 model.readPatID()
                 model.current_state.postValue("Проверка пациента")
             }
-            Box(modifier = myMod(onclick)) {
+            Box(modifier = mod_card(onclick)) {
                 Column(modifier = Modifier.padding(padd)) {
                     if ("${it["ErrorDescription"]}".length > 4) {
                         Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
@@ -286,11 +285,11 @@ fun myUsrCardBox(model: AppViewModel) {
                 model.readLpuList()
                 model.current_state.postValue("Выбрать клинику")
             }
-            Box(modifier = myMod(onclick)) {
+            Box(modifier = mod_card(onclick)) {
                 Column(modifier = Modifier.padding(padd)) {
-                    myText("${it["F"]} ${it["I"]} ${it["O"]}")
-                    myText("Дата рождения: ${it["D"]}")
-                    myText("Район: ${it["R"]}")
+                    Text("${it["F"]} ${it["I"]} ${it["O"]}")
+                    Text("Дата рождения: ${it["D"]}")
+                    Text("Район: ${it["R"]}")
                     IconButton(onClick = {
                         model.current_usr = it
                         model.current_state.postValue("Изменить")
@@ -302,8 +301,42 @@ fun myUsrCardBox(model: AppViewModel) {
 }
 
 @Composable
+fun myUsrCardBox2(model: AppViewModel) {
+    if (!model.usrList.value.isNullOrEmpty())
+        LazyColumnFor(model.usrList.value!!) {
+            var onclick = {
+                model.current_usr = it
+                model.readLpuList()
+                model.current_state.postValue("Выбрать клинику")
+            }
+            Box(modifier = mod_card(onclick)) {
+                Column(modifier = mod_padd) {
+                    Text("${it["F"]} ${it["I"]} ${it["O"]}", style = typography.body1)
+                    /*-- myFieldList() --*/
+                    val mod_col = Modifier.background( color = MaterialTheme.colors.secondary, shape = shapes.small )
+                    Box(modifier = mod_list()) {
+                        Row {
+                            Column {
+                                IconButton(onClick = {
+                                    model.current_usr = it
+                                    model.current_state.postValue("Изменить")
+                                }) { Icon(Icons.Filled.Edit, tint = Color.LightGray) }
+                            }
+                            Column(modifier = mod_padd) {
+                                Text("Дата рождения: ${it["D"]}", style = typography.body2)
+                                Text("Район: ${it["R"]}", style = typography.body2)
+                            }
+                        }
+                    }
+                    /*---*/
+                }
+            }
+        }
+}
+
+@Composable
 fun myTalonGetCardBox(model: AppViewModel) {
-    Box(modifier = myMod({})) {
+    Box(modifier = mod_card({})) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)
             Row {
@@ -321,7 +354,7 @@ fun myTalonGetCardBox(model: AppViewModel) {
 
 @Composable
 fun myTalonDelCardBox(model: AppViewModel) {
-    Box(modifier = myMod({})) {
+    Box(modifier = mod_card({})) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)
             Row {

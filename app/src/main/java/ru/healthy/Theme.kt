@@ -1,6 +1,10 @@
 package ru.healthy
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,28 +25,41 @@ import androidx.core.content.ContextCompat.getColor
 */
 
 val padd = 8.dp
-val tmod = Modifier.padding(0.dp, 0.dp, 0.dp, padd)
+
+//val tmod = Modifier.padding(0.dp, 0.dp, 0.dp, padd)
+val tmod = Modifier.padding(padd)
 val tstyle = TextStyle(fontSize = 18.sp)
 val colors = listOf(
-        Color(0xFFffd7d7.toInt()),
-        Color(0xFFffe9d6.toInt()),
-        Color(0xFFfffbd0.toInt()),
-        Color(0xFFe3ffd9.toInt()),
-        Color(0xFFd0fff8.toInt())
+    Color(0xFFffd7d7.toInt()),
+    Color(0xFFffe9d6.toInt()),
+    Color(0xFFfffbd0.toInt()),
+    Color(0xFFe3ffd9.toInt()),
+    Color(0xFFd0fff8.toInt())
 )
 
 val shapes = Shapes(
-        small = RoundedCornerShape(4.dp),
-        medium = RoundedCornerShape(8.dp),
-        large = RoundedCornerShape(16.dp)
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(8.dp),
+    large = RoundedCornerShape(16.dp)
 )
 
 val typography = Typography(
-        body1 = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
-        )
+    body1 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
+    ),
+    body2 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
+    overline = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 12.sp,
+        color = Color.Red
+    ),
 )
 
 /*
@@ -58,22 +75,22 @@ val LightPalette = lightColors(
 */
 
 val LightPalette = lightColors(
-        primary = Color(android.graphics.Color.parseColor("#2e7d32")),
-        primaryVariant = Color(android.graphics.Color.parseColor("#005005")), //цвет StatusBar
-        secondary = Color(android.graphics.Color.parseColor("#d84315")), //цвет FAB и RadioButton
-        secondaryVariant = Color(android.graphics.Color.parseColor("#9f0000")), //цвет Switch
-        surface = Color(android.graphics.Color.parseColor("#ff7543"))
+    primary = Color(android.graphics.Color.parseColor("#2e7d32")),
+    primaryVariant = Color(android.graphics.Color.parseColor("#005005")), //цвет StatusBar
+    secondary = Color(android.graphics.Color.parseColor("#2e7d32")), //цвет FAB и RadioButton
+    secondaryVariant = Color(android.graphics.Color.parseColor("#2e7d32")), //цвет Switch
+    surface = Color(android.graphics.Color.parseColor("#ff7543"))
 )
 
 val DarkPalette = darkColors(
-        primary = Color.Gray, //цвет Button и подписей
-        primaryVariant = Color.DarkGray, //цвет StatusBar
-        secondary = Color.LightGray, //цвет FAB и RadioButton
-        surface = Color.LightGray, //в темной теме цвет ActionBar
-        onSurface =Color.Black,
-        onPrimary =Color.Black,
-        onSecondary =Color.Black,
-        onBackground = Color.Black
+    primary = Color.Gray, //цвет Button и подписей
+    primaryVariant = Color.DarkGray, //цвет StatusBar
+    secondary = Color.LightGray, //цвет FAB и RadioButton
+    surface = Color.LightGray, //в темной теме цвет ActionBar
+    onSurface = Color.Black,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onBackground = Color.Black
 )
 
 
@@ -82,30 +99,61 @@ fun HexToColor(hex: String): Color {
     hex = hex.replace("#", "")
     when (hex.length) {
         6 -> return Color(
-                Integer.valueOf(hex.substring(0, 2), 16),
-                Integer.valueOf(hex.substring(2, 4), 16),
-                Integer.valueOf(hex.substring(4, 6), 16)
+            Integer.valueOf(hex.substring(0, 2), 16),
+            Integer.valueOf(hex.substring(2, 4), 16),
+            Integer.valueOf(hex.substring(4, 6), 16)
         )
         8 -> return Color(
-                Integer.valueOf(hex.substring(0, 2), 16),
-                Integer.valueOf(hex.substring(2, 4), 16),
-                Integer.valueOf(hex.substring(4, 6), 16),
-                Integer.valueOf(hex.substring(6, 8), 16)
+            Integer.valueOf(hex.substring(0, 2), 16),
+            Integer.valueOf(hex.substring(2, 4), 16),
+            Integer.valueOf(hex.substring(4, 6), 16),
+            Integer.valueOf(hex.substring(6, 8), 16)
         )
     }
     return Color(0)
 }
 
+val mod_padd = Modifier.padding(8.dp)
+val mod_back = Modifier.background(Color.LightGray, shapes.small)
+val mod_bord = Modifier.border(1.dp, Color.Red, shapes.small)
+
+@Composable
+fun mod_info(): Modifier {
+    return Modifier
+}
+
+@Composable
+fun mod_list(): Modifier {
+    return Modifier
+        //.padding(8.dp)
+        //.fillMaxWidth()
+        //.wrapContentWidth(Alignment.CenterHorizontally)
+        //.background(color = MaterialTheme.colors.surface, shape = shapes.medium)
+        //.border(0.dp, MaterialTheme.colors.primary, shapes.small)
+}
+
+@Composable
+fun mod_card(oncl: () -> Unit): Modifier {
+    return Modifier
+        .padding(padd)
+        .fillMaxWidth()
+        //.wrapContentWidth(Alignment.CenterHorizontally)
+        //.background(color = MaterialTheme.colors.surface, shape = MaterialTheme.shapes.medium)
+        .border(0.dp, MaterialTheme.colors.primary, shapes.small)
+        .clickable(onClick = oncl)
+}
+
+
 @Composable
 fun myTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     MaterialTheme(
-            colors = if (dark) {
-                DarkPalette
-            } else {
-                LightPalette
-            },
-            typography = typography,
-            shapes = shapes,
-            content = content
+        colors = if (dark) {
+            DarkPalette
+        } else {
+            LightPalette
+        },
+        typography = typography,
+        shapes = shapes,
+        content = content
     )
 }

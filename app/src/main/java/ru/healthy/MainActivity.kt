@@ -8,27 +8,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Icon
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.ExperimentalLazyDsl
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.ui.tooling.preview.Preview
 import java.io.File
@@ -173,7 +160,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun myBar(model: AppViewModel) {
     TopAppBar(
-        title = { Text("${model.current_state.value}", maxLines = 2) },
+        title = { Text("${model.current_state.value}", maxLines = 1) },
         navigationIcon = {
             IconButton(onClick = { model.current_state.postValue("Выбрать пациента") }) {
                 Icon(Icons.Filled.Person)
@@ -183,9 +170,9 @@ fun myBar(model: AppViewModel) {
             IconButton(onClick = { model.current_state.postValue("Информация") }) {
                 Icon(Icons.Filled.Info)
             }
-            IconButton(onClick = { model.current_state.postValue("Выйти") }) {
-                Icon(Icons.Filled.ExitToApp)
-            }
+            //IconButton(onClick = { model.current_state.postValue("Выйти") }) {
+            //    Icon(Icons.Filled.ExitToApp)
+            //}
             //myTopDropDownMenu(model)
         }
     )
@@ -211,19 +198,21 @@ fun myFab(model: AppViewModel) {
     }
 }
 
+
 @Composable
-fun myHead(model: AppViewModel) {
-    Text(infoString, modifier = Modifier.padding(padd), style = tstyle)
-    if (!model.current_usr["lastError"].isNullOrEmpty()) {
-        Text(
-            "${model.current_usr["lastError"]}",
-            modifier = Modifier.padding(padd),
-            style = TextStyle(color = Color.Red)
-        )
-    }
-    if (model.wait.value!!) {
-        Text("Запрос в регистратуру ${model.current_usr["L"]}", modifier = Modifier.padding(padd))
-        LinearProgressIndicator(modifier = Modifier.padding(padd).fillMaxWidth())
+fun myHeader(model: AppViewModel) {
+    Box(modifier = mod_info()) {
+        Column(modifier = mod_padd) {
+            if (model.wait.value!!) {
+                Text("Запрос в регистратуру ${model.current_usr["L"]}", style = typography.body1)
+                LinearProgressIndicator(modifier = Modifier.padding(padd).fillMaxWidth())
+            } else {
+                if (!model.current_usr["lastError"].isNullOrEmpty()) {
+                    Text("${model.current_usr["lastError"]}", style = typography.overline)
+                }
+                Text(infoString, style = typography.body2)
+            }
+        }
     }
 }
 
@@ -231,7 +220,7 @@ fun myHead(model: AppViewModel) {
 fun myContent(model: AppViewModel) {
     when (model.current_state.value) {
         "Search top 10" -> my10UsrEditCardBox(model)
-        "Выбрать пациента" -> myUsrCardBox(model)
+        "Выбрать пациента" -> myUsrCardBox2(model)
         "Изменить" -> myUsrEditCardBox(model)
         "Выбрать клинику" -> myLpuCardBox(model)
         "Проверка пациента" -> mySpecCardBox(model)
@@ -254,7 +243,7 @@ fun myScaffold(model: AppViewModel) {
         floatingActionButton = { myFab(model) }
     ) {
         Column {
-            myHead(model)
+            myHeader(model)
             myContent(model)
         }
     }
@@ -276,7 +265,7 @@ fun LightPreview() {
         myScaffold(model)
     }
 }
-
+/*
 @Preview(showBackground = true, showDecoration = true)
 @Composable
 fun DarkPreview() {
@@ -285,3 +274,4 @@ fun DarkPreview() {
         myScaffold(model)
     }
 }
+*/
