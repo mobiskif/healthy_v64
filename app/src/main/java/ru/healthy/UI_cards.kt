@@ -103,7 +103,7 @@ fun myUsrEditFields(model: AppViewModel) {
             placeholder = { Text(text = "1986-04-26") }, modifier = Modifier.padding(0.dp, padd / 2)
     )
     Spacer(modifier = Modifier.preferredHeightIn(padd))
-    myDistrictSpinner(model, model.current_usr, estyle)
+    //myDistrictSpinner(model, model.current_usr, estyle)
 }
 
 @Composable
@@ -194,7 +194,7 @@ fun mySpecCardBox(model: AppViewModel) {
     val item = model.lpuInfo.value
     Text("${item?.get("Address")} ${item?.get("Phone")} ${item?.get("Email")}", modifier = Modifier.padding(padd))
     model.specList.value?.forEach { it ->
-        val index = (colors.size * Math.random()).toInt()
+        //val index = (colors.size * Math.random()).toInt()
         val onclick = {
             var usr = model.current_usr.toMutableMap()
             usr["IdSpesiality"] = it["IdSpesiality"].toString()
@@ -258,13 +258,14 @@ fun myLpuCardBox(model: AppViewModel) {
 
 @Composable
 fun myUsrCardBox(model: AppViewModel) {
+    var contcol = contentColorFor(color = MaterialTheme.colors.background)
     model.usrList.value?.forEach { it ->
         var onclick = {
             model.current_usr = it
             model.readLpuList()
             model.current_state.postValue("Выбрать клинику")
         }
-        Box(modifier = myMod(onclick)) {
+        Box(modifier = myMod(onclick) ) {
             Column(modifier = Modifier.padding(padd)) {
                 myText("${it["F"]} ${it["I"]} ${it["O"]}")
                 myText("Дата рождения: ${it["D"]}")
@@ -280,12 +281,7 @@ fun myUsrCardBox(model: AppViewModel) {
 
 @Composable
 fun myTalonGetCardBox(model: AppViewModel) {
-    Box(
-            modifier = Modifier.padding(padd).fillMaxWidth()
-                    .wrapContentWidth(Alignment.CenterHorizontally).background(
-                            color = Color.Green, shape = RoundedCornerShape(padd)
-                    )
-    ) {
+    Box(modifier = myMod({})) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)
             Row {
@@ -301,12 +297,7 @@ fun myTalonGetCardBox(model: AppViewModel) {
 
 @Composable
 fun myTalonDelCardBox(model: AppViewModel) {
-    Box(
-            modifier = Modifier.padding(padd).fillMaxWidth()
-                    .wrapContentWidth(Alignment.CenterHorizontally).background(
-                            color = Color.Red, shape = RoundedCornerShape(padd)
-                    )
-    ) {
+    Box(modifier = myMod({})) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)
             Row {

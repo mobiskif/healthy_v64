@@ -3,11 +3,7 @@ package ru.healthy
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.material.Typography
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -73,7 +69,11 @@ val DarkPalette = darkColors(
         primary = Color.Gray, //цвет Button и подписей
         primaryVariant = Color.DarkGray, //цвет StatusBar
         secondary = Color.LightGray, //цвет FAB и RadioButton
-        surface = Color.LightGray //в темной теме цвет ActionBar
+        surface = Color.LightGray, //в темной теме цвет ActionBar
+        onSurface =Color.Black,
+        onPrimary =Color.Black,
+        onSecondary =Color.Black,
+        onBackground = Color.Black
 )
 
 
@@ -99,7 +99,11 @@ fun HexToColor(hex: String): Color {
 @Composable
 fun myTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     MaterialTheme(
-            colors = if (dark) {DarkPalette} else {LightPalette},
+            colors = if (dark) {
+                DarkPalette
+            } else {
+                LightPalette
+            },
             typography = typography,
             shapes = shapes,
             content = content

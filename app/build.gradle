@@ -35,10 +35,6 @@ android {
         // Enables Jetpack Compose for this module
         compose true
     }
-    composeOptions {
-        //kotlinCompilerExtensionVersion "1.0.0-alpha01"
-    }
-
     //composeOptions {
     //    kotlinCompilerExtensionVersion $compose_version
     //    kotlinCompilerVersion $kotlin_version

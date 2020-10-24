@@ -8,10 +8,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Icon
+import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.ExperimentalLazyDsl
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -246,7 +249,9 @@ fun myScaffold(model: AppViewModel) {
     ) {
         Column {
             myHead(model)
-            myContent(model)
+            ScrollableColumn {
+                myContent(model)
+            }
         }
     }
 }
@@ -261,7 +266,7 @@ fun UI_(model: AppViewModel) {
 
 @Preview(showBackground = true, showDecoration = true)
 @Composable
-fun DefaultPreview() {
+fun LightPreview() {
     val model = AppViewModel(true)
     myTheme(false) {
         myScaffold(model)
