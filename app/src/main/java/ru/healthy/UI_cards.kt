@@ -28,7 +28,7 @@ fun myTalonFields(it: Map<String, String>) {
                     Text("${it["NameSpesiality"]} \nДата: ${it["VisitEnd"]} \nВремя: ${it["VisitStart"]}", style = typography.body2)
                     if ("${it["ErrorDescription"]}".length > 4) Text("${it["ErrorDescription"]}", style = typography.body2)
                 }
-                Column (modifier = mod_padd + mod_back) {
+                Column (modifier = mod_padd + mod_back()) {
                     Box (modifier = mod_padd) {
                         Text("${it["VisitStart"]}", style = typography.h4)
                     }
@@ -67,7 +67,66 @@ fun myUsrEditFields(model: AppViewModel) {
     var I by state { TextFieldValue("${model.current_usr["I"]}") }
     var O by state { TextFieldValue("${model.current_usr["O"]}") }
     var D by state { TextFieldValue("${model.current_usr["D"]}") }
+    var R by state { TextFieldValue("${model.current_usr["R"]}") }
 
+    Box(modifier = mod_card({})) {
+        Column(modifier = mod_padd) {
+            //Text("$F $I $O", style = typography.body1)
+            Box(modifier = mod_list()) {
+                Row {
+                    Column(modifier = mod_padd) {
+                        Row {
+                            Button(content = { Text("Сохранить") }, onClick = {
+                                var usr = model.current_usr.toMutableMap()
+                                usr["F"] = F.text
+                                usr["I"] = I.text
+                                usr["O"] = O.text
+                                usr["D"] = D.text
+                                model.current_usr = usr
+                                model.updateUserInList()
+                                model.readLpuList()
+                                model.current_state.postValue("Выбрать пациента")
+                            })
+                            TextButton(content = { Text("Удалить") }, onClick = {
+                                model.deleteCurrentUser()
+                                model.current_state.postValue("Выбрать пациента")
+                            })
+                        }
+                        Spacer(modifier = Modifier.preferredHeightIn(padd))
+                        TextField(
+                            //textStyle = estyle,
+                            value = F,
+                            onValueChange = { F = it },
+                            label = { Text("Фамилия") }, modifier = Modifier.padding(0.dp, padd / 2)
+                        )
+                        TextField(
+                            //textStyle = estyle,
+                            value = I,
+                            onValueChange = { I = it },
+                            label = { Text("Имя") }, modifier = Modifier.padding(0.dp, padd / 2)
+                        )
+                        TextField(
+                            //textStyle = estyle,
+                            value = O,
+                            onValueChange = { O = it },
+                            label = { Text("Отчество") }, modifier = Modifier.padding(0.dp, padd / 2)
+                        )
+                        TextField(
+                            //textStyle = estyle,
+                            value = D,
+                            onValueChange = { D = it },
+                            label = { Text("Дата рождения") },
+                            placeholder = { Text(text = "1986-04-26") }, modifier = Modifier.padding(0.dp, padd / 2)
+                        )
+                        Spacer(modifier = Modifier.preferredHeightIn(padd))
+                        myDistrictSpinner(model, model.current_usr, estyle)
+                    }
+                }
+            }
+        }
+    }
+
+    /*
     Row {
         Button(content = { Text("Сохранить") }, onClick = {
             var usr = model.current_usr.toMutableMap()
@@ -112,7 +171,9 @@ fun myUsrEditFields(model: AppViewModel) {
         placeholder = { Text(text = "1986-04-26") }, modifier = Modifier.padding(0.dp, padd / 2)
     )
     Spacer(modifier = Modifier.preferredHeightIn(padd))
-    //myDistrictSpinner(model, model.current_usr, estyle)
+    myDistrictSpinner(model, model.current_usr, estyle)
+
+     */
 }
 
 @Composable

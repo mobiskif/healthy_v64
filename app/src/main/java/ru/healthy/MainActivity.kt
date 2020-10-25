@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
                 infoString = "Санкт-Петербург"
             }
             "Изменить" -> {
-                infoString = ""
+                infoString = "Санкт-Петербург"
             }
             "Информация" -> {
                 infoString = ""

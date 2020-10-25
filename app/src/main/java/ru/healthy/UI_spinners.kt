@@ -61,9 +61,10 @@ fun myDistrictSpinner(model: AppViewModel, user: Map<String, String>, tstyle: Te
     }
     Row {
         DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                toggle = iconButton
+            dropdownModifier = mod_back(),
+                    expanded = expanded,
+            onDismissRequest = { expanded = false },
+            toggle = iconButton
         ) {
             Column {
                 list.value?.forEach {
@@ -72,15 +73,15 @@ fun myDistrictSpinner(model: AppViewModel, user: Map<String, String>, tstyle: Te
                             onClick = { expanded = false; },
                             content = {
                                 Box(
-                                        modifier = Modifier.clickable(onClick = {
-                                            spinnerText = "${it["Name"]}"
-                                            expanded = false
-                                            var usr = model.current_usr.toMutableMap()
-                                            usr["R"] = spinnerText
-                                            usr["iR"] = "${it["IdDistrict"]}"
-                                            model.current_usr = usr
-                                            if (model.isAdmin) model.readLpuList()
-                                        })
+                                    modifier = Modifier.clickable(onClick = {
+                                        spinnerText = "${it["Name"]}"
+                                        expanded = false
+                                        var usr = model.current_usr.toMutableMap()
+                                        usr["R"] = spinnerText
+                                        usr["iR"] = "${it["IdDistrict"]}"
+                                        model.current_usr = usr
+                                        if (model.isAdmin) model.readLpuList()
+                                    })
                                 ) {
                                     Text("${it["Name"]}")
                                 }
