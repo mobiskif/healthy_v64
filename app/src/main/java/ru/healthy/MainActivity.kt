@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                 infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
             }
             "Выбрать специальность" -> {
-                infoString = "${usr["L"]}" //+ "\nКарточка №:${usr["IdPat"]}"
+                infoString = "${usr["L"]}" + "\nКарточка №:${usr["IdPat"]}"
             }
             "Выбрать врача" -> {
                 infoString = "${usr["L"]} \n${usr["NameSpesiality"]}"

@@ -85,12 +85,12 @@ val LightPalette = lightColors(
 val DarkPalette = darkColors(
     primary = Color.Gray, //цвет Button и подписей
     primaryVariant = Color.DarkGray, //цвет StatusBar
-    secondary = Color.LightGray, //цвет FAB и RadioButton
-    surface = Color.LightGray, //в темной теме цвет ActionBar
-    onSurface = Color.Black,
-    onPrimary = Color.Black,
-    onSecondary = Color.Black,
-    onBackground = Color.Black
+    secondary = Color.Gray, //цвет FAB и RadioButton
+    surface = Color.Gray, //в темной теме цвет ActionBar
+    onSurface = Color.LightGray,
+    onPrimary = Color.LightGray,
+    onSecondary = Color.LightGray,
+    onBackground = Color.LightGray
 )
 
 

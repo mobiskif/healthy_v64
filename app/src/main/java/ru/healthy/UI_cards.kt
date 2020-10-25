@@ -255,16 +255,15 @@ fun myLpuCardBox(model: AppViewModel) {
                     Box(modifier = mod_list()) {
                         Row {
                             Column(modifier = mod_padd) {
-                                Text("Система: ${it["Description"]}", style = typography.body2)
+                                Text("МИС: ${it["Description"]}", style = typography.body2)
                                 if ("${it["ErrorDescription"]}".length > 4) Text(
                                     "${it["ErrorDescription"]}",
                                     style = typography.body2
                                 )
                             }
                             Column(modifier = mod_padd) {
-                                Text("Адрес: ${it["Address"]}", style = typography.body2)
-                                val t = Text("${it["ErrorDescription"]}", style = typography.body2)
-                                t
+                                Text("${it["Address"]}", style = typography.body2)
+                                Text("Тел.: ${it["Phone"]}", style = typography.body2)
                             }
                         }
                     }
