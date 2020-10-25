@@ -1,5 +1,7 @@
 package ru.healthy
 
+import androidx.compose.foundation.Text
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -98,12 +100,14 @@ class AppViewModel(ispreview: Boolean = false) : ViewModel() {
         }
     }
 
+    /*
     val lpuInfo = repository.lpuInfo
-    fun readLpuInfo() {
+    fun readLpuInfo(idLPU: String) {
         viewModelScope.launch {
-            repository.readLpuInfo(current_usr)
+            repository.readLpuInfo(idLPU)
         }
     }
+    */
 
     val doctorList = if (ispreview) repository.previewList else repository.doctorList
     fun readDocList() {

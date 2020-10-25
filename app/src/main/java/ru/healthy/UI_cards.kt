@@ -7,12 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -29,7 +27,7 @@ fun myTalonFields(it: Map<String, String>) {
                     if ("${it["ErrorDescription"]}".length > 4) Text("${it["ErrorDescription"]}", style = typography.body2)
                 }
                 Column (modifier = mod_padd + mod_back()) {
-                    Box (modifier = mod_padd) {
+                    Box (modifier = mod_padd + Modifier.align(Alignment.End)) {
                         Text("${it["VisitStart"]}", style = typography.h4)
                     }
                 }
@@ -204,7 +202,7 @@ fun myHistCardBox(model: AppViewModel) {
 
 @Composable
 fun mySpecCardBox(model: AppViewModel) {
-    val item = model.lpuInfo.value
+    //val item = model.lpuInfo.value
     //Text("${item?.get("Address")} ${item?.get("Phone")} ${item?.get("Email")}", modifier = Modifier.padding(padd) )
     if (!model.specList.value.isNullOrEmpty())
         LazyColumnFor(model.specList.value!!) { it ->
@@ -263,12 +261,16 @@ fun myLpuCardBox(model: AppViewModel) {
                                     style = typography.body2
                                 )
                             }
+                            Column(modifier = mod_padd) {
+                                Text("Адрес: ${it["Address"]}", style = typography.body2)
+                                val t = Text("${it["ErrorDescription"]}", style = typography.body2)
+                                t
+                            }
                         }
                     }
                 }
             }
         }
-        //model.readLpuInfo()
     }
 }
 

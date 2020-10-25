@@ -155,6 +155,7 @@ class Hub {
         //mc.addRow(row);
         var result: MutableList<Map<String, String>> = mutableListOf()
         var set: MutableMap<String, String> = mutableMapOf()
+        var idLPU = "0"
         try {
             event = myParser!!.eventType
             while (event != XmlPullParser.END_DOCUMENT) {
@@ -174,11 +175,22 @@ class Hub {
                             }
                             "Description" -> set["Description"] = text
                             "District" -> set["District"] = text
-                            "IdLPU" -> set["IdLPU"] = text
+                            "IdLPU" -> {
+                                set["IdLPU"] = text
+                                idLPU = text
+                            }
                             "LPUFullName" -> set["LPUFullName"] = text
                             "LPUShortName" -> set["Name"] = text
                             "LPUType" -> {
                                 set["LPUType"] = text
+
+                                //var result2: MutableList<Map<String, String>> = mutableListOf()
+                                var result2 = GetLpuInfo("GetLPUInfo", arrayOf(idLPU))
+                                set["Address"] = result2["Address"].toString()
+                                set["Email"] = result2["Email"].toString()
+                                set["Phone"] = result2["Phone"].toString()
+                                set["Oid"] = result2["Oid"].toString()
+
                                 result.add(set)
                                 set = mutableMapOf()
                             }

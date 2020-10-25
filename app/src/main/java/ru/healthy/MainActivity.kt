@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity() {
         model.wait.observe(this, waitObserver())
         model.usrList.observe(this, usrListObserver())
         model.current_state.observe(this, stateObserver())
-        model.lpuList.observe(this, stateObserver())
+        model.lpuList.observe(this, lpuListObserver())
+        //model.lpuInfo.observe(this, lpuInfoObserver())
         model.specList.observe(this, stateObserver())
         model.doctorList.observe(this, stateObserver())
         model.talonList.observe(this, stateObserver())
@@ -73,6 +74,7 @@ class MainActivity : AppCompatActivity() {
         when (state) {
             "Выбрать пациента" -> state = if (model.isAdmin) "Search top 10" else "Выбрать пациента"
             "Выбрать клинику" -> state = "Выбрать пациента"
+            "Изменить" -> state = "Выбрать пациента"
             "Информация" -> state = "Выбрать пациента"
             "Выбрать специальность" -> state = "Выбрать клинику"
             "Выбрать врача" -> state = "Выбрать специальность"
@@ -94,6 +96,17 @@ class MainActivity : AppCompatActivity() {
         setContent { UI_(model) }
     }
 
+    private fun lpuListObserver() = Observer<List<Map<String, String>>> {
+        Log.d("jop", "------ lpuListObserver: $it")
+        setContent { UI_(model) }
+    }
+
+
+    private fun lpuInfoObserver() = Observer<Map<String, String>> {
+        Log.d("jop", "------ lpuInfoObserver: $it")
+        //setContent { UI_(model) }
+    }
+
     private fun patientObserver() = Observer<Map<String, String>> {
         val usr = model.current_usr.toMutableMap()
         usr["IdPat"] = it["IdPat"].toString()
@@ -104,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         model.current_usr = usr
         model.readHistList()
         model.readSpecList()
-        model.readLpuInfo()
+        //model.readLpuInfo()
         model.current_state.postValue("Выбрать специальность")
     }
 

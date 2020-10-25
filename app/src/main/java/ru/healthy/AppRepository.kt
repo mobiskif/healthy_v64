@@ -160,20 +160,41 @@ class AppRepository {
         }
     }
 
+    /*
     private var _lpuInfo = MutableLiveData<Map<String, String>>()
     val lpuInfo: LiveData<Map<String, String>> = _lpuInfo
-    suspend fun readLpuInfo(curr_user: Map<String, String>) {
+    suspend fun readLpuInfo(idLPU: String) {
         val args = arrayOf(
-            curr_user["iL"].toString()
+            idLPU
         )
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
             //_patList.postValue( Hub().GetTop10("SearchTop10Patient", args) )
             var res = Hub().GetLpuInfo("GetLPUInfo", args)
             _lpuInfo.postValue(res)
+
+            var lst1 =  _lpuList.value
+            var lpu = _lpuList.value?.filter { it["IdLPU"] == idLPU }
+            var lst2 = lst1?.filterNot { it ==lpu }
+
+
+            Log.d("jop", "***** $lpu")
+            var address = mapOf("Address" to res["Address"])
+            var email = mapOf("Email" to res["Email"])
+            var phone = mapOf("Phone" to res["Phone"])
+
+            var lpu2 = lpu?.get(0)?.plus(address)
+            var lpu3 = lpu2?.plus(email)
+            var lpu4 = lpu3?.plus(phone)
+            Log.d("jop", "***** $lpu4")
+
+            var lst3 = lst2?.plus(lpu4) as List<Map<String, String>>
+            _lpuList2.postValue(lst3)
+
             _wait.postValue(false)
         }
     }
+    */
 
 
     private var _talonState = MutableLiveData<Map<String, String>>()
