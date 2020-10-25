@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                 infoString = "Санкт-Петербург"
             }
             "Информация" -> {
-                infoString = ""
+                infoString = "Как это работает"
             }
             "Выбрать клинику" -> {
                 infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"

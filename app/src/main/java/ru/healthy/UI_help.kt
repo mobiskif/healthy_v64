@@ -1,54 +1,31 @@
 package ru.healthy
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @androidx.compose.runtime.Composable
 fun myHelp(model: AppViewModel) {
-    var index: Int
-    ScrollableColumn(modifier = Modifier.padding(padd)) {
-        index = (colors.size * Math.random()).toInt()
-        Box ( modifier = Modifier
-            .padding(padd)
-            .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .background(color = colors[index % colors.size], shape = RoundedCornerShape(padd))
-        ) {
-            Text("Программа лишь выполняет запросы в Регистратуры (к серверам поликлиник) и отображает их ответы.", modifier = Modifier.padding(padd))
+    ScrollableColumn {
+        androidx.compose.foundation.layout.Box(modifier = mod_card({})) {
+            Column(modifier = mod_padd) {
+                //Text("Как это работает", style = typography.body1)
+                androidx.compose.foundation.layout.Box(modifier = mod_list()) {
+                    Row {
+                        Column(modifier = mod_padd) {
+                            Text("Программа лишь выполняет запросы в Регистратуры (к серверам поликлиник) и отображает их ответы.", style = typography.body2)
+                            Text("\nКлиники ведут себя по-разному: некоторые включают запись в 8:00 и выключают в 20:00, стоматологии часто показывают талоны информационно, без возможности записи и т.п.", style = typography.body2)
+                            Text("\nОтложенные ранее талоны видны по нажатию иконки \"Календарь\" внутри \"Выбрать специальность\". Нажмите на талон, чтобы отменить.", style = typography.body2)
+                            Text("\nЗапись возможна, лишь когда ФИО и дата совпадают с данными карточки, ранее заведенной в Регистратуре выбранной поликлиники. Иногда нужно сходить/позвонить и свериться.", style = typography.body2)
+                        }
+                    }
+                }
+            }
         }
-        index = (colors.size * Math.random()).toInt()
-        Box ( modifier = Modifier
-            .padding(padd)
-            .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .background(color = colors[index % colors.size], shape = RoundedCornerShape(padd))
-        ) {
-            Text("Клиники ведут себя по-разному: некоторые включают запись в 8:00 и выключают в 20:00, стоматологии часто показывают талоны информационно, без возможности записи и т.п.", modifier = Modifier.padding(padd))
-        }
-        index = (colors.size * Math.random()).toInt()
-        Box ( modifier = Modifier
-            .padding(padd)
-            .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .background(color = colors[index % colors.size], shape = RoundedCornerShape(padd))
-        ) {
-            Text("Отложенные ранее талоны видны по нажатию иконки \"Календарь\" внутри \"Выбрать специальность\". Нажмите на талон, чтобы отменить.", modifier = Modifier.padding(padd))
-        }
-        index = (colors.size * Math.random()).toInt()
-        Box ( modifier = Modifier
-            .padding(padd)
-            .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .background(color = colors[index % colors.size], shape = RoundedCornerShape(padd))
-        ) {
-            Text("Запись возможна, лишь когда ФИО и дата совпадают с данными карточки, ранее заведенной в Регистратуре выбранной поликлиники. Иногда нужно сходить/позвонить и свериться.", modifier = Modifier.padding(padd))
-        }
-
         Box(modifier = Modifier.clickable(onClick = { model.isAdmin = !model.isAdmin })) {
             Text("              ")
         }
