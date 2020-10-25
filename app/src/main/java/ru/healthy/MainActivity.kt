@@ -14,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.Observer
@@ -126,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             }
             "Выбрать пациента" -> {
                 model.current_usr = mapOf()
-                infoString = ""
+                infoString = "Санкт-Петербург"
             }
             "Изменить" -> {
                 infoString = ""
@@ -143,10 +144,10 @@ class MainActivity : AppCompatActivity() {
                 infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
             }
             "Выбрать специальность" -> {
-                infoString = "${usr["F"]} ${usr["I"]} ${usr["L"]} карточка №:${usr["IdPat"]}"
+                infoString = "${usr["L"]}" //+ "\nКарточка №:${usr["IdPat"]}"
             }
             "Выбрать врача" -> {
-                infoString = "${usr["F"]} ${usr["I"]} ${usr["L"]} ${usr["NameSpesiality"]}"
+                infoString = "${usr["L"]} \n${usr["NameSpesiality"]}"
             }
             "Выйти" -> {
                 finish()
@@ -170,10 +171,6 @@ fun myBar(model: AppViewModel) {
             IconButton(onClick = { model.current_state.postValue("Информация") }) {
                 Icon(Icons.Filled.Info)
             }
-            //IconButton(onClick = { model.current_state.postValue("Выйти") }) {
-            //    Icon(Icons.Filled.ExitToApp)
-            //}
-            //myTopDropDownMenu(model)
         }
     )
 }
@@ -198,29 +195,11 @@ fun myFab(model: AppViewModel) {
     }
 }
 
-
-@Composable
-fun myHeader(model: AppViewModel) {
-    Box(modifier = mod_info()) {
-        Column(modifier = mod_padd) {
-            if (model.wait.value!!) {
-                Text("Запрос в регистратуру ${model.current_usr["L"]}", style = typography.body1)
-                LinearProgressIndicator(modifier = Modifier.padding(padd).fillMaxWidth())
-            } else {
-                if (!model.current_usr["lastError"].isNullOrEmpty()) {
-                    Text("${model.current_usr["lastError"]}", style = typography.overline)
-                }
-                Text(infoString, style = typography.body2)
-            }
-        }
-    }
-}
-
 @Composable
 fun myContent(model: AppViewModel) {
     when (model.current_state.value) {
         "Search top 10" -> my10UsrEditCardBox(model)
-        "Выбрать пациента" -> myUsrCardBox2(model)
+        "Выбрать пациента" -> myUsrCardBox(model)
         "Изменить" -> myUsrEditCardBox(model)
         "Выбрать клинику" -> myLpuCardBox(model)
         "Проверка пациента" -> mySpecCardBox(model)
@@ -237,14 +216,40 @@ fun myContent(model: AppViewModel) {
 }
 
 @Composable
+fun myHeader(model: AppViewModel) {
+    //Box() {
+    Column(modifier = mod_padd) {
+        if (!model.current_usr["lastError"].isNullOrEmpty()) {
+            Box(modifier = mod_info()) {
+                Column(modifier = mod_padd) {
+                    Text("${model.current_usr["lastError"]}", style = typography.overline)
+                }
+            }
+            Spacer(modifier = Modifier.preferredHeightIn(padd))
+        }
+        Text(infoString, style = typography.body1)
+    }
+}
+
+@Composable
 fun myScaffold(model: AppViewModel) {
     Scaffold(
         topBar = { myBar(model) },
         floatingActionButton = { myFab(model) }
     ) {
-        Column {
-            myHeader(model)
-            myContent(model)
+        if (model.wait.value!!) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.fillMaxSize() + mod_padd) {
+                    Text("Запрос в регистратуру ${model.current_usr["L"]}", style = typography.body1)
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+        else {
+            Column {
+                myHeader(model)
+                myContent(model)
+            }
         }
     }
 }
@@ -260,18 +265,7 @@ fun UI_(model: AppViewModel) {
 @Preview(showBackground = true, showDecoration = true)
 @Composable
 fun LightPreview() {
-    val model = AppViewModel(true)
     myTheme(false) {
-        myScaffold(model)
+        myScaffold(AppViewModel(true))
     }
 }
-/*
-@Preview(showBackground = true, showDecoration = true)
-@Composable
-fun DarkPreview() {
-    val model = AppViewModel(true)
-    myTheme(true) {
-        myScaffold(model)
-    }
-}
-*/

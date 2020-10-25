@@ -56,7 +56,7 @@ val typography = Typography(
     ),
     overline = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         color = Color.Red
     ),
@@ -120,6 +120,11 @@ val mod_bord = Modifier.border(1.dp, Color.Red, shapes.small)
 @Composable
 fun mod_info(): Modifier {
     return Modifier
+    //.padding(8.dp)
+    //.fillMaxWidth()
+    //.wrapContentWidth(Alignment.CenterHorizontally)
+    //.background(color = MaterialTheme.colors.surface, shape = shapes.medium)
+    //.border(0.dp, Color.Red, shapes.small)
 }
 
 @Composable

@@ -7,8 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -18,17 +20,21 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun myTalonFields(it: Map<String, String>) {
-    if ("${it["ErrorDescription"]}".length > 4) {
-        Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
-    } else {
-        Text("Талон № ${it["IdAppointment"]}")
-        Text("${if (!it["Name"].isNullOrEmpty()) it["Name"] else ""}")
-        Text(
-            "${it["NameSpesiality"]} ${it["VisitEnd"]} ${it["VisitStart"]}",
-            modifier = tmod,
-            style = tstyle
-        )
-        //if (!item["Name"].isNullOrEmpty()) Text("${item["Name"]}", modifier = tmod, style = tstyle)
+    Column(modifier = mod_padd) {
+        Text("Талон: ${it["IdAppointment"]}", style = typography.body1)
+        Box(modifier = mod_list() + Modifier.wrapContentSize()) {
+            Row {
+                Column(modifier = mod_padd) {
+                    Text("${it["NameSpesiality"]} \nДата: ${it["VisitEnd"]} \nВремя: ${it["VisitStart"]}", style = typography.body2)
+                    if ("${it["ErrorDescription"]}".length > 4) Text("${it["ErrorDescription"]}", style = typography.body2)
+                }
+                Column (modifier = mod_padd + mod_back) {
+                    Box (modifier = mod_padd) {
+                        Text("${it["VisitStart"]}", style = typography.h4)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -72,7 +78,7 @@ fun myUsrEditFields(model: AppViewModel) {
             model.current_usr = usr
             model.updateUserInList()
             model.readLpuList()
-            model.current_state.postValue("Выбрать клинику")
+            model.current_state.postValue("Выбрать пациента")
         })
         TextButton(content = { Text("Удалить") }, onClick = {
             model.deleteCurrentUser()
@@ -137,9 +143,7 @@ fun myTalonCardBox(model: AppViewModel) {
                 model.current_state.postValue("Взять талон")
             }
             Box(modifier = mod_card(onclick)) {
-                Column(modifier = Modifier.padding(padd)) {
-                    myTalonFields(it)
-                }
+                myTalonFields(it)
             }
         }
 }
@@ -158,15 +162,16 @@ fun myDoctorCardBox(model: AppViewModel) {
                 model.current_state.postValue("Выбрать талон")
             }
             Box(modifier = mod_card(onclick)) {
-                Column(modifier = Modifier.padding(padd)) {
-                    if ("${it["ErrorDescription"]}".length > 4) {
-                        Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
-                    } else {
-                        Text("${it["Name"]}", modifier = tmod, style = tstyle)
-                        Text("Талонов: ${it["CountFreeTicket"]}", modifier = tmod, style = tstyle)
-                        Text("Участок: ${it["AriaNumber"]}", modifier = tmod)
-                        //Text("${item["NearestDate"]}".dropLast(9), modifier = tmod)
-                        //Text("${item["LastDate"]}".dropLast(9), modifier = tmod)
+                Column(modifier = mod_padd) {
+                    Text("${it["Name"]}", style = typography.body1)
+                    Box(modifier = mod_list()) {
+                        Row {
+                            Column(modifier = mod_padd) {
+                                Text("Талонов: ${it["CountFreeTicket"]}", style = typography.body2)
+                                Text("Участок: ${it["AriaNumber"]}", style = typography.body2)
+                                if ("${it["ErrorDescription"]}".length > 4) Text("${it["ErrorDescription"]}", style = typography.body2)
+                            }
+                        }
                     }
                 }
             }
@@ -191,9 +196,7 @@ fun myHistCardBox(model: AppViewModel) {
                 model.current_state.postValue("Отменить талон")
             }
             Box(modifier = mod_card(onclick)) {
-                Column(modifier = Modifier.padding(padd)) {
-                    myTalonFields(it)
-                }
+                myTalonFields(it)
             }
         }
 }
@@ -201,10 +204,7 @@ fun myHistCardBox(model: AppViewModel) {
 @Composable
 fun mySpecCardBox(model: AppViewModel) {
     val item = model.lpuInfo.value
-    Text(
-        "${item?.get("Address")} ${item?.get("Phone")} ${item?.get("Email")}",
-        modifier = Modifier.padding(padd)
-    )
+    //Text("${item?.get("Address")} ${item?.get("Phone")} ${item?.get("Email")}", modifier = Modifier.padding(padd) )
     if (!model.specList.value.isNullOrEmpty())
         LazyColumnFor(model.specList.value!!) { it ->
             //model.specList.value?.forEach { it ->
@@ -218,17 +218,19 @@ fun mySpecCardBox(model: AppViewModel) {
                 model.current_state.postValue("Выбрать врача")
             }
             Box(modifier = mod_card(onclick)) {
-                Column(modifier = Modifier.padding(padd)) {
-                    if ("${it["ErrorDescription"]}".length > 4) {
-                        Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
-                    } else {
-                        Text("${it["NameSpesiality"]}", modifier = tmod, style = tstyle)
-                        Text(
-                            "Талонов: ${it["CountFreeParticipantIE"]}",
-                            modifier = tmod,
-                            style = tstyle
-                        )
-                        Text("Резерв: ${it["CountFreeTicket"]}", modifier = tmod)
+                Column(modifier = mod_padd) {
+                    Text("${it["NameSpesiality"]}", style = typography.body1)
+                    Box(modifier = mod_list()) {
+                        Row {
+                            Column(modifier = mod_padd) {
+                                Text("Талонов: ${it["CountFreeParticipantIE"]}", style = typography.body2)
+                                Text("Резерв: ${it["CountFreeTicket"]}", style = typography.body2)
+                                if ("${it["ErrorDescription"]}".length > 4) Text(
+                                    "${it["ErrorDescription"]}",
+                                    style = typography.body2
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -236,24 +238,9 @@ fun mySpecCardBox(model: AppViewModel) {
 }
 
 
-/*
-val mod_card = Modifier
-    .padding(8.dp)
-    .fillMaxWidth()
-    //.wrapContentWidth(Alignment.CenterHorizontally)
-    //.background(color = Color.Green, shape = shapes.small)
-    .border(1.dp, Color.LightGray, shapes.small)
- */
-
-@Composable
-fun myText(text: String) {
-    Text(text, modifier = tmod, style = tstyle)
-}
-
-
 @Composable
 fun myLpuCardBox(model: AppViewModel) {
-    if (!model.lpuList.value.isNullOrEmpty())
+    if (!model.lpuList.value.isNullOrEmpty()) {
         LazyColumnFor(model.lpuList.value!!) { it ->
             var onclick = {
                 var usr = model.current_usr.toMutableMap()
@@ -264,16 +251,37 @@ fun myLpuCardBox(model: AppViewModel) {
                 model.current_state.postValue("Проверка пациента")
             }
             Box(modifier = mod_card(onclick)) {
-                Column(modifier = Modifier.padding(padd)) {
-                    if ("${it["ErrorDescription"]}".length > 4) {
-                        Text("${it["ErrorDescription"]}", modifier = tmod, style = tstyle)
-                    } else {
-                        Text("${it["Name"]}", modifier = tmod, style = tstyle)
-                        Text("Система: ${it["Description"]}", modifier = tmod)
+                Column(modifier = mod_padd) {
+                    Text("${it["Name"]}", style = typography.body1)
+                    Box(modifier = mod_list()) {
+                        Row {
+                            Column(modifier = mod_padd) {
+                                Text("Система: ${it["Description"]}", style = typography.body2)
+                                if ("${it["ErrorDescription"]}".length > 4) Text(
+                                    "${it["ErrorDescription"]}",
+                                    style = typography.body2
+                                )
+                            }
+                            /*
+                            Column {
+                                IconButton(onClick = {
+                                    model.current_usr = it
+                                    model.current_state.postValue("Изменить")
+                                }) {
+                                    Icon(
+                                        Icons.Filled.Edit,
+                                        tint = MaterialTheme.colors.secondary
+                                    )
+                                }
+                            }
+                            */
+                        }
                     }
                 }
             }
         }
+        //model.readLpuInfo()
+    }
 }
 
 @Composable
@@ -286,41 +294,17 @@ fun myUsrCardBox(model: AppViewModel) {
                 model.current_state.postValue("Выбрать клинику")
             }
             Box(modifier = mod_card(onclick)) {
-                Column(modifier = Modifier.padding(padd)) {
-                    Text("${it["F"]} ${it["I"]} ${it["O"]}")
-                    Text("Дата рождения: ${it["D"]}")
-                    Text("Район: ${it["R"]}")
-                    IconButton(onClick = {
-                        model.current_usr = it
-                        model.current_state.postValue("Изменить")
-                    }) { Icon(Icons.Filled.Edit, tint = Color.LightGray) }
-                }
-            }
-        }
-
-}
-
-@Composable
-fun myUsrCardBox2(model: AppViewModel) {
-    if (!model.usrList.value.isNullOrEmpty())
-        LazyColumnFor(model.usrList.value!!) {
-            var onclick = {
-                model.current_usr = it
-                model.readLpuList()
-                model.current_state.postValue("Выбрать клинику")
-            }
-            Box(modifier = mod_card(onclick)) {
                 Column(modifier = mod_padd) {
                     Text("${it["F"]} ${it["I"]} ${it["O"]}", style = typography.body1)
+
                     /*-- myFieldList() --*/
-                    val mod_col = Modifier.background( color = MaterialTheme.colors.secondary, shape = shapes.small )
                     Box(modifier = mod_list()) {
                         Row {
                             Column {
                                 IconButton(onClick = {
                                     model.current_usr = it
                                     model.current_state.postValue("Изменить")
-                                }) { Icon(Icons.Filled.Edit, tint = Color.LightGray) }
+                                }) { Icon(Icons.Filled.Edit, tint = MaterialTheme.colors.secondary) }
                             }
                             Column(modifier = mod_padd) {
                                 Text("Дата рождения: ${it["D"]}", style = typography.body2)
