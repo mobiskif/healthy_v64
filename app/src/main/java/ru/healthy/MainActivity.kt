@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun usrListObserver() = Observer<List<Map<String, String>>> {
         Log.d("jop", "------ usrListObserver: $it")
-        setContent { UI_(model) }
+        //setContent { UI_(model) }
     }
 
     private fun lpuListObserver() = Observer<List<Map<String, String>>> {
@@ -101,11 +101,6 @@ class MainActivity : AppCompatActivity() {
         setContent { UI_(model) }
     }
 
-
-    private fun lpuInfoObserver() = Observer<Map<String, String>> {
-        Log.d("jop", "------ lpuInfoObserver: $it")
-        //setContent { UI_(model) }
-    }
 
     private fun patientObserver() = Observer<Map<String, String>> {
         val usr = model.current_usr.toMutableMap()
@@ -134,6 +129,7 @@ class MainActivity : AppCompatActivity() {
     private fun stateObserver() = Observer<Any> {
         Log.d("jop", "------ stateObserver: state = ${model.current_state.value}")
         val usr = model.current_usr.toMutableMap()
+        val history = model.historyList.value?.size
         when (model.current_state.value) {
             "Search top 10" -> {
                 infoString = ""
@@ -157,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                 infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
             }
             "Выбрать специальность" -> {
-                infoString = "${usr["L"]}" + "\nКарточка №:${usr["IdPat"]}"
+                infoString = "${usr["L"]}" + "\nКарточка №:${usr["IdPat"]} $history"
             }
             "Выбрать врача" -> {
                 infoString = "${usr["L"]} \n${usr["NameSpesiality"]}"

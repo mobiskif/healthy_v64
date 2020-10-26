@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 @androidx.compose.runtime.Composable
 fun myHelp(model: AppViewModel) {
     ScrollableColumn {
-        androidx.compose.foundation.layout.Box(modifier = mod_card({})) {
+        androidx.compose.foundation.layout.Box(modifier = mod_card {}) {
             Column(modifier = mod_padd) {
                 //Text("Как это работает", style = typography.body1)
                 androidx.compose.foundation.layout.Box(modifier = mod_list()) {

@@ -46,7 +46,7 @@ fun myUsrEditCardBox(model: AppViewModel) {
         var D by state { TextFieldValue("${model.current_usr["D"]}") }
         var R by state { TextFieldValue("${model.current_usr["R"]}") }
 
-        Box(modifier = mod_card({})) {
+        Box(modifier = mod_card {}) {
             Column(modifier = mod_padd) {
                 //Text("$F $I $O", style = typography.body1)
                 Box(modifier = mod_list()) {
@@ -309,7 +309,7 @@ fun myUsrCardBox(model: AppViewModel) {
 
 @Composable
 fun myTalonGetCardBox(model: AppViewModel) {
-    Box(modifier = mod_card({})) {
+    Box(modifier = mod_card {}) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)
             Row {
@@ -327,7 +327,7 @@ fun myTalonGetCardBox(model: AppViewModel) {
 
 @Composable
 fun myTalonDelCardBox(model: AppViewModel) {
-    Box(modifier = mod_card({})) {
+    Box(modifier = mod_card {}) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)
             Row {
