@@ -237,7 +237,7 @@ fun myScaffold(model: AppViewModel) {
     ) {
         if (model.wait.value!!) {
             Column(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.fillMaxSize() + mod_padd) {
+                Box(modifier = Modifier.fillMaxSize().then(mod_padd)) {
                     Text("Запрос в регистратуру ${model.current_usr["L"]}", style = typography.body1)
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
