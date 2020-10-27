@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
         model.usrfile = File(filesDir, "usrlist.csv")
 
         model.wait.observe(this, waitObserver())
-        model.usrList.observe(this, usrListObserver())
+        //model.usrList.observe(this, usrListObserver())
         model.current_state.observe(this, stateObserver())
-        model.lpuList.observe(this, lpuListObserver())
+        //model.lpuList.observe(this, lpuListObserver())
         //model.lpuInfo.observe(this, lpuInfoObserver())
         model.specList.observe(this, stateObserver())
         model.doctorList.observe(this, stateObserver())
@@ -87,20 +87,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun waitObserver() = Observer<Any> {
-        Log.d("jop", "------ waitObserver: wait = ${model.wait.value}")
+        //Log.d("jop", "------ waitObserver: wait = ${model.wait.value}")
         setContent { UI_(model) }
     }
-
-    private fun usrListObserver() = Observer<List<Map<String, String>>> {
-        Log.d("jop", "------ usrListObserver: $it")
-        //setContent { UI_(model) }
-    }
-
-    private fun lpuListObserver() = Observer<List<Map<String, String>>> {
-        Log.d("jop", "------ lpuListObserver: $it")
-        setContent { UI_(model) }
-    }
-
 
     private fun patientObserver() = Observer<Map<String, String>> {
         val usr = model.current_usr.toMutableMap()
