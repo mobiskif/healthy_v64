@@ -61,7 +61,7 @@ fun myUsrEditCardBox(model: AppViewModel) {
                                     usr["D"] = D.text
                                     model.current_usr = usr
                                     model.updateUserInList()
-                                    model.readLpuList()
+                                    //model.readLpuList()
                                     model.current_state.postValue("Выбрать пациента")
                                 })
                                 TextButton(content = { Text("Удалить") }, onClick = {
@@ -263,7 +263,8 @@ fun myLpuCardBox(model: AppViewModel) {
                             }
                             Column(modifier = mod_padd) {
                                 Text("${it["Address"]}", style = typography.body2)
-                                Text("Тел.: ${it["Phone"]}", style = typography.body2)
+                                Text("${it["Email"]}", style = typography.body2)
+                                Text("${it["Phone"]}", style = typography.body2)
                             }
                         }
                     }
