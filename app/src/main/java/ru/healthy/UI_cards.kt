@@ -37,7 +37,7 @@ fun myTalonFields(it: Map<String, String>) {
 }
 
 @Composable
-fun myUsrEditCardBox(model: AppViewModel) {
+fun myUsrEditCardBox(model: myViewModel) {
     ScrollableColumn(modifier = Modifier.padding(padd)) {
         val estyle = TextStyle(fontSize = 18.sp)
         var F by state { TextFieldValue("${model.current_usr["F"]}") }
@@ -106,7 +106,7 @@ fun myUsrEditCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun my10UsrEditCardBox(model: AppViewModel) {
+fun my10UsrEditCardBox(model: myViewModel) {
     ScrollableColumn(modifier = Modifier.padding(padd)) {
         val estyle = TextStyle(fontSize = 18.sp)
         var F by state { TextFieldValue("${model.current_usr["F"]}") }
@@ -129,7 +129,7 @@ fun my10UsrEditCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun myTalonCardBox(model: AppViewModel) {
+fun myTalonCardBox(model: myViewModel) {
     if (!model.talonList.value.isNullOrEmpty())
         LazyColumnFor(model.talonList.value!!) { it ->
             //model.talonList.value?.forEach { it ->
@@ -148,7 +148,7 @@ fun myTalonCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun myDoctorCardBox(model: AppViewModel) {
+fun myDoctorCardBox(model: myViewModel) {
     if (!model.doctorList.value.isNullOrEmpty())
         LazyColumnFor(model.doctorList.value!!) { it ->
             //model.doctorList.value?.forEach { it ->
@@ -178,7 +178,7 @@ fun myDoctorCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun myHistCardBox(model: AppViewModel) {
+fun myHistCardBox(model: myViewModel) {
     Text("Отложенные в ${model.current_usr["L"]} талоны:", modifier = Modifier.padding(padd))
     if (!model.historyList.value.isNullOrEmpty())
         LazyColumnFor(model.historyList.value!!) { it ->
@@ -201,7 +201,7 @@ fun myHistCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun mySpecCardBox(model: AppViewModel) {
+fun mySpecCardBox(model: myViewModel) {
     //val item = model.lpuInfo.value
     //Text("${item?.get("Address")} ${item?.get("Phone")} ${item?.get("Email")}", modifier = Modifier.padding(padd) )
     if (!model.specList.value.isNullOrEmpty())
@@ -238,7 +238,7 @@ fun mySpecCardBox(model: AppViewModel) {
 
 
 @Composable
-fun myLpuCardBox(model: AppViewModel) {
+fun myLpuCardBox(model: myViewModel) {
     if (!model.lpuList.value.isNullOrEmpty()) {
         LazyColumnFor(model.lpuList.value!!) { it ->
             var onclick = {
@@ -275,7 +275,7 @@ fun myLpuCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun myUsrCardBox(model: AppViewModel) {
+fun myUsrCardBox(model: myViewModel) {
     if (!model.usrList.value.isNullOrEmpty())
         LazyColumnFor(model.usrList.value!!) {
             var onclick = {
@@ -309,7 +309,7 @@ fun myUsrCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun myTalonGetCardBox(model: AppViewModel) {
+fun myTalonGetCardBox(model: myViewModel) {
     Box(modifier = mod_card {}) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)
@@ -327,7 +327,7 @@ fun myTalonGetCardBox(model: AppViewModel) {
 }
 
 @Composable
-fun myTalonDelCardBox(model: AppViewModel) {
+fun myTalonDelCardBox(model: myViewModel) {
     Box(modifier = mod_card {}) {
         Column(modifier = Modifier.padding(padd)) {
             myTalonFields(model.current_usr)

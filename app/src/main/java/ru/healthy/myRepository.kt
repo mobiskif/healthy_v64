@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import java.io.*
 import java.lang.Exception
 
-class AppRepository {
+class myRepository {
 
     val previewList = MutableLiveData<List<Map<String, String>>>(
         mutableListOf(
@@ -57,15 +57,8 @@ class AppRepository {
     suspend fun deleteUser(usr: Map<String, String>) {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            var lst1 =  usrList.value
-            var usr1 = usr
-            var lst2 = lst1?.filterNot { it ==usr1 }
-            _usrList.postValue(lst2)
-
-            //исключаем из списка старого юсера с id текущего
-            //var lst = usrList.value!!.filterNot { it == usr }
-            //var lst = usrList.value!!.filterNot { it["id"].equals(usr["id"]) }
-            //_usrList.postValue(lst)
+            var lst = usrList.value?.filterNot { it == usr }
+            _usrList.postValue(lst)
             _wait.postValue(false)
         }
     }

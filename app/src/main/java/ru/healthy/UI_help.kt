@@ -3,13 +3,10 @@ package ru.healthy
 import androidx.compose.foundation.*
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @androidx.compose.runtime.Composable
-fun myHelp(model: AppViewModel) {
+fun myHelp(model: myViewModel) {
     ScrollableColumn {
         androidx.compose.foundation.layout.Box(modifier = mod_card {}) {
             Column(modifier = mod_padd) {

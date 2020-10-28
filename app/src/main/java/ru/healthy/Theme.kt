@@ -122,7 +122,7 @@ fun mod_back(): Modifier {
 val mod_bord = Modifier.border(1.dp, Color.Red, shapes.small)
 
 @Composable
-fun mod_info(): Modifier {
+fun err_info(): Modifier {
     return Modifier
     //.padding(8.dp)
     //.fillMaxWidth()

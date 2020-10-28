@@ -1,6 +1,5 @@
 package ru.healthy
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.ui.tooling.preview.Preview
 import java.io.File
 
@@ -25,14 +25,16 @@ import java.io.File
 private var infoString = ""
 private var isVertical = true
 
-var context: Context? = null
+//var context: Context? = null
 
 class MainActivity : AppCompatActivity() {
-    private val model: AppViewModel by viewModels()
+    private val model: myViewModel by viewModels()
+    //private lateinit var model: myViewModel
 
     override fun onCreate(savedStateHandle: Bundle?) {
         super.onCreate(savedStateHandle)
-        context = this.applicationContext
+        //context = this.applicationContext
+        //model = ViewModelProvider(this).get(myViewModel(this).javaClass)
 
         File(filesDir, "usrlist.csv").createNewFile()
         model.usrfile = File(filesDir, "usrlist.csv")
@@ -157,7 +159,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun myBar(model: AppViewModel) {
+fun myBar(model: myViewModel) {
     TopAppBar(
         title = { Text("${model.current_state.value}", maxLines = 1) },
         navigationIcon = {
@@ -174,7 +176,7 @@ fun myBar(model: AppViewModel) {
 }
 
 @Composable
-fun myFab(model: AppViewModel) {
+fun myFab(model: myViewModel) {
     if (model.current_state.value.equals("Выбрать пациента")) {
         FloatingActionButton(
             onClick = {
@@ -194,7 +196,7 @@ fun myFab(model: AppViewModel) {
 }
 
 @Composable
-fun myContent(model: AppViewModel) {
+fun myContent(model: myViewModel) {
     when (model.current_state.value) {
         "Search top 10" -> my10UsrEditCardBox(model)
         "Выбрать пациента" -> myUsrCardBox(model)
@@ -214,11 +216,11 @@ fun myContent(model: AppViewModel) {
 }
 
 @Composable
-fun myHeader(model: AppViewModel) {
+fun myHeader(model: myViewModel) {
     //Box() {
     Column(modifier = mod_padd) {
         if (!model.current_usr["lastError"].isNullOrEmpty()) {
-            Box(modifier = mod_info()) {
+            Box(modifier = err_info()) {
                 Column(modifier = mod_padd) {
                     Text("${model.current_usr["lastError"]}", style = typography.overline)
                 }
@@ -230,7 +232,7 @@ fun myHeader(model: AppViewModel) {
 }
 
 @Composable
-fun myScaffold(model: AppViewModel) {
+fun myScaffold(model: myViewModel) {
     Scaffold(
         topBar = { myBar(model) },
         floatingActionButton = { myFab(model) }
@@ -253,7 +255,7 @@ fun myScaffold(model: AppViewModel) {
 }
 
 @Composable
-fun UI_(model: AppViewModel) {
+fun UI_(model: myViewModel) {
     myTheme {
         myScaffold(model)
     }
@@ -264,6 +266,6 @@ fun UI_(model: AppViewModel) {
 @Composable
 fun LightPreview() {
     myTheme(false) {
-        myScaffold(AppViewModel(true))
+        myScaffold(myViewModel(true))
     }
 }

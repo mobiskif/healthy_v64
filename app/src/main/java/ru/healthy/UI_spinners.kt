@@ -2,7 +2,6 @@ package ru.healthy
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.Box
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -18,7 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 @androidx.compose.runtime.Composable
-fun myTopDropDownMenu(model: AppViewModel) {
+fun myTopDropDownMenu(model: myViewModel) {
     var expanded by state { false }
     DropdownMenu(
             expanded = expanded,
@@ -41,7 +40,7 @@ fun myTopDropDownMenu(model: AppViewModel) {
 }
 
 @androidx.compose.runtime.Composable
-fun myDistrictSpinner(model: AppViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
+fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
     var expanded by state { false }
     var spinnerText by state { "${user["R"]}" }
     val list = model.districtList
@@ -95,7 +94,7 @@ fun myDistrictSpinner(model: AppViewModel, user: Map<String, String>, tstyle: Te
 }
 
 @androidx.compose.runtime.Composable
-fun myLPUSpinner(model: AppViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
+fun myLPUSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
     var expanded by state { false }
     var spinnerText by state { "${user["L"]}" }
     val list = model.lpuList

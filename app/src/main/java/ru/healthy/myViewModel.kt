@@ -1,16 +1,15 @@
 package ru.healthy
 
-import androidx.compose.foundation.Text
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.io.File
 
-class AppViewModel(ispreview: Boolean = false) : ViewModel() {
+class myViewModel(ispreview: Boolean = false) : ViewModel() {
+//class myViewModel(ispreview: Boolean = false) : ApplicationViewModel(application) {
     lateinit var usrfile: File
-    private val repository: AppRepository = AppRepository()
+    private val repository: myRepository = myRepository()
     val wait = repository.wait
 
     var isAdmin = false
