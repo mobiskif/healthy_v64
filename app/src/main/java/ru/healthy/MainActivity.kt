@@ -9,11 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,28 +21,21 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private val model: myViewModel by viewModels()
-    //private lateinit var model: myViewModel
-    //private var infoString = ""
     private var isVertical = true
 
     override fun onCreate(savedStateHandle: Bundle?) {
         super.onCreate(savedStateHandle)
-        //application = this.applicationContext
         //model = ViewModelProvider(this).get(myViewModel(this).javaClass)
-
         File(filesDir, "usrlist.csv").createNewFile()
         model.usrfile = File(filesDir, "usrlist.csv")
 
-        model.wait.observe(this, waitObserver())
-        //model.usrList.observe(this, usrListObserver())
+        model.patID.observe(this, patientObserver())
+        model.wait.observe(this, stateObserver())
         model.current_state.observe(this, stateObserver())
-        //model.lpuList.observe(this, lpuListObserver())
-        //model.lpuInfo.observe(this, lpuInfoObserver())
         model.specList.observe(this, stateObserver())
         model.doctorList.observe(this, stateObserver())
         model.talonList.observe(this, stateObserver())
         model.historyList.observe(this, stateObserver())
-        model.patID.observe(this, patientObserver())
         model.talonState.observe(this, talonStateObserver())
     }
 
@@ -63,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        Log.d("jop",newConfig.toString())
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || window.attributes.width > window.attributes.height) isVertical =
             false
         else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || window.attributes.width < window.attributes.height) isVertical =
@@ -85,11 +74,6 @@ class MainActivity : AppCompatActivity() {
             "Отменить талон" -> state = "Выбрать специальность"
         }
         model.current_state.postValue(state)
-    }
-
-    private fun waitObserver() = Observer<Any> {
-        //Log.d("jop", "------ waitObserver: wait = ${model.wait.value}")
-        setContent { UI_(model) }
     }
 
     private fun patientObserver() = Observer<Map<String, String>> {
@@ -158,49 +142,11 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun myBar(model: myViewModel) {
-    TopAppBar(
-        title = { Text("${model.current_state.value}", maxLines = 1) },
-        navigationIcon = {
-            IconButton(onClick = { model.current_state.postValue("Выбрать пациента") }) {
-                Icon(Icons.Filled.Person)
-            }
-        },
-        actions = {
-            IconButton(onClick = { model.current_state.postValue("Информация") }) {
-                Icon(Icons.Filled.Info)
-            }
-        }
-    )
-}
-
-@Composable
-fun myFab(model: myViewModel) {
-    if (model.current_state.value.equals("Выбрать пациента")) {
-        FloatingActionButton(
-            onClick = {
-                val newuser = model.createUser()
-                model.addUser(newuser)
-                model.current_usr = newuser
-                model.current_state.postValue("Изменить")
-                //DataLoader().execute()
-            }
-        ) {
-            Icon(Icons.Filled.Add)
-        }
-    } else if (model.current_state.value.equals("Выбрать специальность")) {
-        FloatingActionButton(onClick = { model.current_state.postValue("Отложенные талоны") }) {
-            Icon(Icons.Filled.DateRange)
-        }
-    }
-}
-
-@Composable
-fun myContent(model: myViewModel) {
+fun showCurrentState(model: myViewModel) {
     when (model.current_state.value) {
         "Search top 10" -> my10UsrEditCardBox(model)
-        "Выбрать пациента" -> myUsrCardBox(model)
         "Изменить" -> myUsrEditCardBox(model)
+        "Выбрать пациента" -> myUsrCardBox(model)
         "Выбрать клинику" -> myLpuCardBox(model)
         "Проверка пациента" -> mySpecCardBox(model)
         "Отложенные талоны" -> myHistCardBox(model)
@@ -211,23 +157,7 @@ fun myContent(model: myViewModel) {
         "Отменить талон" -> myTalonDelCardBox(model)
         "Информация" -> myHelp(model)
         "Выйти" -> Text("Выход")
-        else -> Text("Under construction ...")
-    }
-}
-
-@Composable
-fun myHeader(model: myViewModel) {
-    //Box() {
-    Column(modifier = mod_padd) {
-        if (!model.current_usr["lastError"].isNullOrEmpty()) {
-            Box(modifier = err_info()) {
-                Column(modifier = mod_padd) {
-                    Text("${model.current_usr["lastError"]}", style = typography.overline)
-                }
-            }
-            Spacer(modifier = Modifier.preferredHeightIn(padd))
-        }
-        Text(model.infoString, style = typography.body1)
+        else -> Text("Функция не реализована")
     }
 }
 
@@ -247,8 +177,8 @@ fun myScaffold(model: myViewModel) {
         }
         else {
             Column {
-                myHeader(model)
-                myContent(model)
+                showCurrentInfo(model)
+                showCurrentState(model)
             }
         }
     }
