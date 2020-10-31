@@ -6,34 +6,33 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.ui.tooling.preview.Preview
 import java.io.File
 
 
-private var infoString = ""
-private var isVertical = true
-
-//var context: Context? = null
 
 class MainActivity : AppCompatActivity() {
     private val model: myViewModel by viewModels()
     //private lateinit var model: myViewModel
+    //private var infoString = ""
+    private var isVertical = true
 
     override fun onCreate(savedStateHandle: Bundle?) {
         super.onCreate(savedStateHandle)
-        //context = this.applicationContext
+        //application = this.applicationContext
         //model = ViewModelProvider(this).get(myViewModel(this).javaClass)
 
         File(filesDir, "usrlist.csv").createNewFile()
@@ -123,31 +122,31 @@ class MainActivity : AppCompatActivity() {
         val history = model.historyList.value?.size
         when (model.current_state.value) {
             "Search top 10" -> {
-                infoString = ""
+                model.infoString = ""
             }
             "Выбрать пациента" -> {
                 model.current_usr = mapOf()
-                infoString = "Санкт-Петербург"
+                model.infoString = "Санкт-Петербург"
             }
             "Изменить" -> {
-                infoString = "Санкт-Петербург"
+                model.infoString = "Санкт-Петербург"
             }
             "Информация" -> {
-                infoString = "Как это работает"
+                model.infoString = "Как это работает"
             }
             "Выбрать клинику" -> {
-                infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
+                model.infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
                 usr["lastError"] = ""
                 model.current_usr = usr
             }
             "Проверка пациента" -> {
-                infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
+                model.infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
             }
             "Выбрать специальность" -> {
-                infoString = "${usr["L"]}" + "\nКарточка №:${usr["IdPat"]} $history"
+                model.infoString = "${usr["L"]}" + "\nКарточка №:${usr["IdPat"]} $history"
             }
             "Выбрать врача" -> {
-                infoString = "${usr["L"]} \n${usr["NameSpesiality"]}"
+                model.infoString = "${usr["L"]} \n${usr["NameSpesiality"]}"
             }
             "Выйти" -> {
                 finish()
@@ -227,7 +226,7 @@ fun myHeader(model: myViewModel) {
             }
             Spacer(modifier = Modifier.preferredHeightIn(padd))
         }
-        Text(infoString, style = typography.body1)
+        Text(model.infoString, style = typography.body1)
     }
 }
 

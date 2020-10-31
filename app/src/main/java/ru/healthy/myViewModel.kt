@@ -7,7 +7,9 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 class myViewModel(ispreview: Boolean = false) : ViewModel() {
-//class myViewModel(ispreview: Boolean = false) : ApplicationViewModel(application) {
+    var infoString: String = ""
+
+    //class myViewModel(ispreview: Boolean = false) : ApplicationViewModel(application) {
     lateinit var usrfile: File
     private val repository: myRepository = myRepository()
     val wait = repository.wait
