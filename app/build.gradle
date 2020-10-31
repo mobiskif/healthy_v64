@@ -13,7 +13,6 @@ android {
         targetSdkVersion 30
         versionCode 64
         versionName "64.0"
-
         //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,10 +34,10 @@ android {
         // Enables Jetpack Compose for this module
         compose true
     }
-    //composeOptions {
-    //    kotlinCompilerExtensionVersion $compose_version
-    //    kotlinCompilerVersion $kotlin_version
-    //}
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases/' }
+    }
+
 }
 
 dependencies {
@@ -61,5 +60,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     implementation 'androidx.activity:activity-ktx:1.1.0'
+    implementation 'com.google.code.ksoap2-android:ksoap2-android:3.6.4'
 
 }

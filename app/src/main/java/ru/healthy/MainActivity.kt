@@ -183,6 +183,7 @@ fun myFab(model: myViewModel) {
                 model.addUser(newuser)
                 model.current_usr = newuser
                 model.current_state.postValue("Изменить")
+                //DataLoader().execute()
             }
         ) {
             Icon(Icons.Filled.Add)
