@@ -21,7 +21,7 @@ import androidx.ui.tooling.preview.Preview
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
-    private val model: myViewModel by viewModels()
+    private val model: MyViewModel by viewModels()
     private var isVertical = true
 
     override fun onCreate(savedStateHandle: Bundle?) {
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun showCurrentState(model: myViewModel) {
+fun showCurrentState(model: MyViewModel) {
     when (model.currentState.value) {
         "Search top 10" -> my10UsrEditCardBox(model)
         "Изменить" -> myUsrEditCardBox(model)
@@ -169,7 +169,7 @@ fun showCurrentState(model: myViewModel) {
 }
 
 @Composable
-fun UI_(model: myViewModel) {
+fun UI_(model: MyViewModel) {
     myTheme {
         Scaffold(
             topBar = { myBar(model) },
@@ -196,5 +196,5 @@ fun UI_(model: myViewModel) {
 @Preview(showBackground = true, showDecoration = true)
 @Composable
 fun LightPreview() {
-    UI_(myViewModel(true))
+    UI_(MyViewModel(true))
 }

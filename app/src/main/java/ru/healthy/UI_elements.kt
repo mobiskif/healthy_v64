@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @androidx.compose.runtime.Composable
-fun myHelp(model: myViewModel) {
+fun myHelp(model: MyViewModel) {
     ScrollableColumn {
         Box(modifier = mod_card {}) {
             Column(modifier = mod_padd) {
@@ -42,7 +42,7 @@ fun myHelp(model: myViewModel) {
 }
 
 @Composable
-fun myBar(model: myViewModel) {
+fun myBar(model: MyViewModel) {
     TopAppBar(
         title = { Text("${model.currentState.value}", maxLines = 1) },
         navigationIcon = {
@@ -59,7 +59,7 @@ fun myBar(model: myViewModel) {
 }
 
 @Composable
-fun myFab(model: myViewModel) {
+fun myFab(model: MyViewModel) {
     if (model.currentState.value.equals("Выбрать пациента")) {
         FloatingActionButton(
             onClick = {
@@ -80,7 +80,7 @@ fun myFab(model: myViewModel) {
 }
 
 @Composable
-fun showCurrentInfo(model: myViewModel) {
+fun showCurrentInfo(model: MyViewModel) {
     //Box() {
     Column(modifier = mod_padd) {
         if (!model.currentUsr["lastError"].isNullOrEmpty()) {

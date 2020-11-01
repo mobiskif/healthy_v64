@@ -3,10 +3,12 @@ package ru.healthy
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -46,7 +48,7 @@ fun myTopDropDownMenu(model: myViewModel) {
  */
 
 @androidx.compose.runtime.Composable
-fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
+fun myDistrictSpinner(model: MyViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
     var expanded by state { false }
     var spinnerText by state { "${user["R"]}" }
     val list = model.districtList
@@ -55,7 +57,7 @@ fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: Tex
             Spacer(Modifier.preferredWidth(padd))
             Text(
                 spinnerText,
-                    modifier = Modifier.gravity(Alignment.CenterVertically),
+                    modifier = Modifier.align(Alignment.CenterVertically),
                     style = tstyle
             )
             IconButton(onClick = { expanded = true })
@@ -100,16 +102,16 @@ fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: Tex
 }
 
 @androidx.compose.runtime.Composable
-fun myLPUSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
+fun myLPUSpinner(model: MyViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
     var expanded by state { false }
     var spinnerText by state { "${user["L"]}" }
     val list = model.lpuList
     val iconButton = @androidx.compose.runtime.Composable {
-        Row(modifier = Modifier.drawBorder(1.dp, Color.LightGray).preferredWidth(280.dp)) {
+        Row(modifier = Modifier.border(1.dp, Color.LightGray).preferredWidth(280.dp)) {
             Spacer(Modifier.preferredWidth(padd))
             Text(
                 spinnerText,
-                    modifier = Modifier.gravity(Alignment.CenterVertically),
+                    modifier = Modifier.align(Alignment.CenterVertically),
                     style = tstyle
             )
             IconButton(onClick = { expanded = true })

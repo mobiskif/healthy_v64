@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import java.io.*
 import java.lang.Exception
 
-class myRepository {
+class MyRepository {
 
     val previewList = MutableLiveData<List<Map<String, String>>>(
         mutableListOf(
@@ -65,7 +65,7 @@ class myRepository {
         val args = arrayOf(curr_user["IdSpesiality"].toString(), curr_user["iL"].toString())
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _doctorList.postValue(Hub().GetDoc("GetDoctorList", args))
+            _doctorList.postValue(Hub().getDoc("GetDoctorList", args))
             _wait.postValue(false)
         }
     }
@@ -80,7 +80,7 @@ class myRepository {
         )
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _talonList.postValue(Hub().GetApp("GetAvaibleAppointments", args))
+            _talonList.postValue(Hub().getApp("GetAvaibleAppointments", args))
             _wait.postValue(false)
         }
     }
@@ -91,7 +91,7 @@ class myRepository {
         val args = arrayOf(curr_user["iL"].toString(), curr_user["IdPat"].toString())
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _historyList.postValue(Hub().GetHist("GetPatientHistory", args))
+            _historyList.postValue(Hub().getHist("GetPatientHistory", args))
             _wait.postValue(false)
         }
     }
@@ -101,7 +101,7 @@ class myRepository {
     suspend fun readDistrictList(curr_user: Map<String, String>) {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _districtList.postValue(Hub().GetDistr("GetDistrictList"))
+            _districtList.postValue(Hub().getDistr("GetDistrictList"))
             _wait.postValue(false)
         }
     }
@@ -111,7 +111,7 @@ class myRepository {
     suspend fun readLpuList(curr_user: Map<String, String>) {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _lpuList.postValue(Hub().GetLpu("GetLPUList", curr_user["iR"].toString()))
+            _lpuList.postValue(Hub().getLpu("GetLPUList", curr_user["iR"].toString()))
             _wait.postValue(false)
         }
     }
@@ -122,7 +122,7 @@ class myRepository {
         val args = arrayOf(curr_user["iL"].toString(), curr_user["IdPat"].toString())
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _specList.postValue(Hub().GetSpec("GetSpesialityList", args))
+            _specList.postValue(Hub().getSpec("GetSpesialityList", args))
             _wait.postValue(false)
         }
     }
@@ -140,7 +140,7 @@ class myRepository {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
             //_patList.postValue( Hub().GetTop10("SearchTop10Patient", args) )
-            val res = Hub().GetPat("CheckPatient", args)
+            val res = Hub().getPat("CheckPatient", args)
             _patID.postValue(res)
             _wait.postValue(false)
         }
@@ -193,7 +193,7 @@ class myRepository {
         )
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _talonState.postValue(Hub().RefApp("CreateClaimForRefusal", args))
+            _talonState.postValue(Hub().refApp("CreateClaimForRefusal", args))
             _wait.postValue(false)
         }
         readHistList(curr_user)
@@ -207,7 +207,7 @@ class myRepository {
         )
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            _talonState.postValue(Hub().SetApp("SetAppointment", args))
+            _talonState.postValue(Hub().setApp("SetAppointment", args))
             _wait.postValue(false)
         }
         readHistList(curr_user)
@@ -251,7 +251,7 @@ class myRepository {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
             //_patList.postValue( Hub().GetTop10("SearchTop10Patient", args) )
-            _usrList.postValue(Hub().GetTop10("SearchTop10Patient", args))
+            _usrList.postValue(Hub().getTop10("SearchTop10Patient", args))
             _wait.postValue(false)
         }
     }

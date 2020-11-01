@@ -63,7 +63,7 @@ class Hub {
 
     }
 
-    fun GetDistr(action: String): MutableList<Map<String, String>> {
+    fun getDistr(action: String): MutableList<Map<String, String>> {
         val ret = arrayListOf<String>()
         val query =
                 "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">" +
@@ -131,7 +131,7 @@ class Hub {
         return result
     }
 
-    fun GetLpu(action: String, idDistrict: String): MutableList<Map<String, String>> {
+    fun getLpu(action: String, idDistrict: String): MutableList<Map<String, String>> {
         var ret = arrayListOf<String>()
         val districtID = "17"
 
@@ -150,7 +150,7 @@ class Hub {
 
         val from = arrayOf("_ID", "column1", "column2", "column3")
         var event: Int
-        var text: String = ""
+        var text = ""
         val mc = MatrixCursor(from)
         val row = arrayOfNulls<Any>(from.size)
         //mc.addRow(row);
@@ -186,7 +186,7 @@ class Hub {
                                 set["LPUType"] = text
 
                                 //var result2: MutableList<Map<String, String>> = mutableListOf()
-                                val result2 = GetLpuInfo("GetLPUInfo", arrayOf(idLPU))
+                                val result2 = getLpuInfo("GetLPUInfo", arrayOf(idLPU))
                                 set["Address"] = result2["Address"].toString()
                                 set["Email"] = result2["Email"].toString()
                                 set["Phone"] = result2["Phone"].toString()
@@ -210,7 +210,7 @@ class Hub {
         return result
     }
 
-    private fun GetLpuInfo(action: String, args: Array<String>): MutableMap<String, String> {
+    private fun getLpuInfo(action: String, args: Array<String>): MutableMap<String, String> {
         var ret = arrayListOf<String>()
         val idLpu = args[0]
 
@@ -229,7 +229,7 @@ class Hub {
 
         val from = arrayOf("_ID", "column1", "column2", "column3")
         var event: Int
-        var text: String = ""
+        var text = ""
         val mc = MatrixCursor(from)
         val row = arrayOfNulls<Any>(from.size)
         //mc.addRow(row);
@@ -293,7 +293,7 @@ class Hub {
         return set
     }
 
-    fun GetSpec(action: String, args: Array<String>): MutableList<Map<String, String>> {
+    fun getSpec(action: String, args: Array<String>): MutableList<Map<String, String>> {
         val ret = arrayListOf<String>()
         val idPat = args[1]
         val idLPU = args[0]
@@ -320,7 +320,7 @@ class Hub {
         //mc.addRow(row);
         val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
 
         try {
@@ -367,7 +367,7 @@ class Hub {
         return result
     }
 
-    fun GetDoc(action: String, args: Array<String>): MutableList<Map<String, String>> {
+    fun getDoc(action: String, args: Array<String>): MutableList<Map<String, String>> {
 
         //val idPat = args[2]
         val specID = args[0]
@@ -390,7 +390,7 @@ class Hub {
 
         val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
         try {
             event = myParser!!.eventType
@@ -437,7 +437,7 @@ class Hub {
         return result
     }
 
-    fun GetHist(action: String, args: Array<String>): MutableList<Map<String, String>> {
+    fun getHist(action: String, args: Array<String>): MutableList<Map<String, String>> {
 
         val idPat = args[1]
         val idLPU = args[0]
@@ -458,7 +458,7 @@ class Hub {
 
         val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
         try {
             event = myParser!!.eventType
@@ -514,7 +514,7 @@ class Hub {
         return result
     }
 
-    fun GetPat(action: String, args: Array<String>): MutableMap<String, String> {
+    fun getPat(action: String, args: Array<String>): MutableMap<String, String> {
 
         val idPat = "502655"
         val specID = 78
@@ -541,7 +541,7 @@ class Hub {
 
         var result: MutableMap<String, String> = mutableMapOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
         try {
             event = myParser!!.eventType
@@ -582,7 +582,7 @@ class Hub {
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun GetApp(action: String, args: Array<String>): MutableList<Map<String, String>> {
+    fun getApp(action: String, args: Array<String>): MutableList<Map<String, String>> {
 
         val idPat = args[2]
         val idDoc = args[1]
@@ -609,7 +609,7 @@ class Hub {
 
         val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
         try {
             event = myParser!!.eventType
@@ -663,7 +663,7 @@ class Hub {
         return result
     }
 
-    fun SetApp(action: String, args: Array<String>): MutableMap<String, String> {
+    fun setApp(action: String, args: Array<String>): MutableMap<String, String> {
 
         val idPat = args[2]
         val idAppoint = args[1]
@@ -686,7 +686,7 @@ class Hub {
 
         var result: MutableMap<String, String> = mutableMapOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
         try {
             Log.e("jops", query)
@@ -729,7 +729,7 @@ class Hub {
         return result
     }
 
-    fun RefApp(action: String, args: Array<String>): MutableMap<String, String> {
+    fun refApp(action: String, args: Array<String>): MutableMap<String, String> {
 
         val idPat = args[2]
         val idAppoint = args[1]
@@ -752,7 +752,7 @@ class Hub {
 
         var result: MutableMap<String, String> = mutableMapOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
         try {
             Log.e("jops", query)
@@ -795,7 +795,7 @@ class Hub {
         return result
     }
 
-    fun GetTop10(action: String, args: Array<String>): MutableList<Map<String, String>> {
+    fun getTop10(action: String, args: Array<String>): MutableList<Map<String, String>> {
 
         val idPat = "502655"
         val specID = 78
@@ -826,7 +826,7 @@ class Hub {
         //mc.addRow(row);
         val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
-        var text: String = ""
+        var text = ""
         var set: MutableMap<String, String> = mutableMapOf()
         var ret = arrayListOf<String>()
 

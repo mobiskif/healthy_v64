@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.io.File
 
-class myViewModel(ispreview: Boolean = false) : ViewModel() {
+class MyViewModel(ispreview: Boolean = false) : ViewModel() {
     var infoString: String = ""
 
     //class myViewModel(ispreview: Boolean = false) : ApplicationViewModel(application_context) {
     lateinit var usrfile: File
-    private val repository: myRepository = myRepository()
+    private val repository: MyRepository = MyRepository()
     val wait = repository.wait
 
     var isAdmin = false
