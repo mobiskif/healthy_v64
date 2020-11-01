@@ -799,8 +799,8 @@ class Hub {
 
         val idPat = "502655"
         val specID = 78
-        val LPUShortName = args[4]
-        val Distr = args[3]
+        val lpuShortName = args[4]
+        val distr = args[3]
         val idDistr = args[2]
         val idLPU = args[1]
         val surn = args[0]
@@ -865,9 +865,9 @@ class Hub {
                             "Surname" -> {
                                 set["F"] = text
                                 set["iR"] = idDistr
-                                set["R"] = Distr
+                                set["R"] = distr
                                 set["iL"] = idLPU
-                                set["L"] = LPUShortName
+                                set["L"] = lpuShortName
                                 set["id"] = "${Math.random()}"
                                 result.add(set)
                                 set = mutableMapOf()

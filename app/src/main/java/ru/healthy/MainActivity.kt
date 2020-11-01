@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         model.usrfile = File(filesDir, "usrlist.csv")
 
         model.wait.observe(this, waitObserver())
-        model.current_state.observe(this, stateObserver())
+        model.currentState.observe(this, stateObserver())
         model.patID.observe(this, patientObserver())
         model.specList.observe(this, stateObserver())
         model.doctorList.observe(this, stateObserver())
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        var state = model.current_state.value
+        var state = model.currentState.value
         when (state) {
             "Выбрать пациента" -> state = if (model.isAdmin) "Search top 10" else "Выбрать пациента"
             "Выбрать клинику" -> state = "Выбрать пациента"
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             "Взять талон" -> state = "Выбрать талон"
             "Отменить талон" -> state = "Выбрать специальность"
         }
-        model.current_state.postValue(state)
+        model.currentState.postValue(state)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -84,39 +84,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun patientObserver() = Observer<Map<String, String>> {
-        val usr = model.current_usr.toMutableMap()
+        val usr = model.currentUsr.toMutableMap()
         usr["IdPat"] = it["IdPat"].toString()
         if ("${it["ErrorDescription"]}".length > 4) {
             usr["lastError"] =
-                "${it["ErrorDescription"]}. Запись в ${model.current_usr["L"]} невозможна."
+                "${it["ErrorDescription"]}. Запись в ${model.currentUsr["L"]} невозможна."
         }
-        model.current_usr = usr
+        model.currentUsr = usr
         model.readHistList()
         model.readSpecList()
         //model.readLpuInfo()
-        model.current_state.postValue("Выбрать специальность")
+        model.currentState.postValue("Выбрать специальность")
     }
 
     private fun talonStateObserver() = Observer<Map<String, String>> {
         if ("${it["ErrorDescription"]}".length > 4) {
-            val usr = model.current_usr.toMutableMap()
+            val usr = model.currentUsr.toMutableMap()
             usr["lastError"] =
-                "${it["ErrorDescription"]}. Запись в ${model.current_usr["L"]} невозможна."
-            model.current_usr = usr
+                "${it["ErrorDescription"]}. Запись в ${model.currentUsr["L"]} невозможна."
+            model.currentUsr = usr
         }
         Toast.makeText(this, "${model.talonState.value}", Toast.LENGTH_SHORT).show()
     }
 
     private fun stateObserver() = Observer<Any> {
-        Log.d("jop", "------ stateObserver: state = ${model.current_state.value}")
-        val usr = model.current_usr.toMutableMap()
+        Log.d("jop", "------ stateObserver: state = ${model.currentState.value}")
+        val usr = model.currentUsr.toMutableMap()
         val history = model.historyList.value?.size
-        when (model.current_state.value) {
+        when (model.currentState.value) {
             "Search top 10" -> {
                 model.infoString = ""
             }
             "Выбрать пациента" -> {
-                model.current_usr = mapOf()
+                model.currentUsr = mapOf()
                 model.infoString = "Санкт-Петербург"
             }
             "Изменить" -> {
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             "Выбрать клинику" -> {
                 model.infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
                 usr["lastError"] = ""
-                model.current_usr = usr
+                model.currentUsr = usr
             }
             "Проверка пациента" -> {
                 model.infoString = "${usr["F"]} ${usr["I"]} ${usr["D"]}"
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun showCurrentState(model: myViewModel) {
-    when (model.current_state.value) {
+    when (model.currentState.value) {
         "Search top 10" -> my10UsrEditCardBox(model)
         "Изменить" -> myUsrEditCardBox(model)
         "Выбрать пациента" -> myUsrCardBox(model)
@@ -178,7 +178,7 @@ fun UI_(model: myViewModel) {
             if (model.wait.value!!) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     Box(modifier = Modifier.fillMaxSize().then(mod_padd)) {
-                        Text("Запрос в регистратуру ${model.current_usr["L"]}", style = typography.body1)
+                        Text("Запрос в регистратуру ${model.currentUsr["L"]}", style = typography.body1)
                         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                     }
                 }

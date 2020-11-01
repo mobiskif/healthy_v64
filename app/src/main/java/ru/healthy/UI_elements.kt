@@ -44,14 +44,14 @@ fun myHelp(model: myViewModel) {
 @Composable
 fun myBar(model: myViewModel) {
     TopAppBar(
-        title = { Text("${model.current_state.value}", maxLines = 1) },
+        title = { Text("${model.currentState.value}", maxLines = 1) },
         navigationIcon = {
-            IconButton(onClick = { model.current_state.postValue("Выбрать пациента") }) {
+            IconButton(onClick = { model.currentState.postValue("Выбрать пациента") }) {
                 androidx.compose.material.Icon(Icons.Filled.Person)
             }
         },
         actions = {
-            IconButton(onClick = { model.current_state.postValue("Информация") }) {
+            IconButton(onClick = { model.currentState.postValue("Информация") }) {
                 androidx.compose.material.Icon(Icons.Filled.Info)
             }
         }
@@ -60,20 +60,20 @@ fun myBar(model: myViewModel) {
 
 @Composable
 fun myFab(model: myViewModel) {
-    if (model.current_state.value.equals("Выбрать пациента")) {
+    if (model.currentState.value.equals("Выбрать пациента")) {
         FloatingActionButton(
             onClick = {
                 val newuser = model.createUser()
                 model.addUser(newuser)
-                model.current_usr = newuser
-                model.current_state.postValue("Изменить")
+                model.currentUsr = newuser
+                model.currentState.postValue("Изменить")
                 //DataLoader().execute()
             }
         ) {
             androidx.compose.material.Icon(Icons.Filled.Add)
         }
-    } else if (model.current_state.value.equals("Выбрать специальность")) {
-        FloatingActionButton(onClick = { model.current_state.postValue("Отложенные талоны") }) {
+    } else if (model.currentState.value.equals("Выбрать специальность")) {
+        FloatingActionButton(onClick = { model.currentState.postValue("Отложенные талоны") }) {
             androidx.compose.material.Icon(Icons.Filled.DateRange)
         }
     }
@@ -83,10 +83,10 @@ fun myFab(model: myViewModel) {
 fun showCurrentInfo(model: myViewModel) {
     //Box() {
     Column(modifier = mod_padd) {
-        if (!model.current_usr["lastError"].isNullOrEmpty()) {
+        if (!model.currentUsr["lastError"].isNullOrEmpty()) {
             Box(modifier = err_info()) {
                 Column(modifier = mod_padd) {
-                    Text("${model.current_usr["lastError"]}", style = typography.overline)
+                    Text("${model.currentUsr["lastError"]}", style = typography.overline)
                 }
             }
             Spacer(modifier = Modifier.preferredHeightIn(padd))

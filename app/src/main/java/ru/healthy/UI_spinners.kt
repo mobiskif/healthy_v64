@@ -1,15 +1,18 @@
 package ru.healthy
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.state
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -78,10 +81,10 @@ fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: Tex
                                     modifier = Modifier.clickable(onClick = {
                                         spinnerText = "${it["Name"]}"
                                         expanded = false
-                                        val usr = model.current_usr.toMutableMap()
+                                        val usr = model.currentUsr.toMutableMap()
                                         usr["R"] = spinnerText
                                         usr["iR"] = "${it["IdDistrict"]}"
-                                        model.current_usr = usr
+                                        model.currentUsr = usr
                                         if (model.isAdmin) model.readLpuList()
                                     })
                                 ) {
@@ -131,10 +134,10 @@ fun myLPUSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyl
                                         modifier = Modifier.clickable(onClick = {
                                             spinnerText = "${it["Name"]}"
                                             expanded = false
-                                            val usr = model.current_usr.toMutableMap()
+                                            val usr = model.currentUsr.toMutableMap()
                                             usr["L"] = spinnerText
                                             usr["iL"] = "${it["IdLPU"]}"
-                                            model.current_usr = usr
+                                            model.currentUsr = usr
 
                                         })
                                 ) {

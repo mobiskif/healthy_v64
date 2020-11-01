@@ -44,11 +44,11 @@ fun myTalonFields(it: Map<String, String>) {
 fun myUsrEditCardBox(model: myViewModel) {
     ScrollableColumn(modifier = Modifier.padding(padd)) {
         val estyle = TextStyle(fontSize = 18.sp)
-        var F by state { TextFieldValue("${model.current_usr["F"]}") }
-        var I by state { TextFieldValue("${model.current_usr["I"]}") }
-        var O by state { TextFieldValue("${model.current_usr["O"]}") }
-        var D by state { TextFieldValue("${model.current_usr["D"]}") }
-        var R by state { TextFieldValue("${model.current_usr["R"]}") }
+        var fF by state { TextFieldValue("${model.currentUsr["F"]}") }
+        var iI by state { TextFieldValue("${model.currentUsr["I"]}") }
+        var oO by state { TextFieldValue("${model.currentUsr["O"]}") }
+        var dD by state { TextFieldValue("${model.currentUsr["D"]}") }
+        var rR by state { TextFieldValue("${model.currentUsr["R"]}") }
 
         Box(modifier = mod_card {}) {
             Column(modifier = mod_padd) {
@@ -58,49 +58,49 @@ fun myUsrEditCardBox(model: myViewModel) {
                         Column(modifier = mod_padd) {
                             Row {
                                 Button(content = { Text("Сохранить") }, onClick = {
-                                    val usr = model.current_usr.toMutableMap()
-                                    usr["F"] = F.text
-                                    usr["I"] = I.text
-                                    usr["O"] = O.text
-                                    usr["D"] = D.text
-                                    model.current_usr = usr
+                                    val usr = model.currentUsr.toMutableMap()
+                                    usr["F"] = fF.text
+                                    usr["I"] = iI.text
+                                    usr["O"] = oO.text
+                                    usr["D"] = dD.text
+                                    model.currentUsr = usr
                                     model.updateUserInList()
                                     //model.readLpuList()
-                                    model.current_state.postValue("Выбрать пациента")
+                                    model.currentState.postValue("Выбрать пациента")
                                 })
                                 TextButton(content = { Text("Удалить") }, onClick = {
                                     model.deleteCurrentUser()
-                                    model.current_state.postValue("Выбрать пациента")
+                                    model.currentState.postValue("Выбрать пациента")
                                 })
                             }
                             Spacer(modifier = Modifier.preferredHeightIn(padd))
                             TextField(
                                 //textStyle = estyle,
-                                value = F,
-                                onValueChange = { F = it },
+                                value = fF,
+                                onValueChange = { fF = it },
                                 label = { Text("Фамилия") }, modifier = Modifier.padding(0.dp, padd / 2)
                             )
                             TextField(
                                 //textStyle = estyle,
-                                value = I,
-                                onValueChange = { I = it },
+                                value = iI,
+                                onValueChange = { iI = it },
                                 label = { Text("Имя") }, modifier = Modifier.padding(0.dp, padd / 2)
                             )
                             TextField(
                                 //textStyle = estyle,
-                                value = O,
-                                onValueChange = { O = it },
+                                value = oO,
+                                onValueChange = { oO = it },
                                 label = { Text("Отчество") }, modifier = Modifier.padding(0.dp, padd / 2)
                             )
                             TextField(
                                 //textStyle = estyle,
-                                value = D,
-                                onValueChange = { D = it },
+                                value = dD,
+                                onValueChange = { dD = it },
                                 label = { Text("Дата рождения") },
                                 placeholder = { Text(text = "1986-04-26") }, modifier = Modifier.padding(0.dp, padd / 2)
                             )
                             Spacer(modifier = Modifier.preferredHeightIn(padd))
-                            myDistrictSpinner(model, model.current_usr, estyle)
+                            myDistrictSpinner(model, model.currentUsr, estyle)
                         }
                     }
                 }
@@ -113,9 +113,9 @@ fun myUsrEditCardBox(model: myViewModel) {
 fun my10UsrEditCardBox(model: myViewModel) {
     ScrollableColumn(modifier = Modifier.padding(padd)) {
         val estyle = TextStyle(fontSize = 18.sp)
-        var F by state { TextFieldValue("${model.current_usr["F"]}") }
-        myDistrictSpinner(model, model.current_usr, estyle)
-        myLPUSpinner(model, model.current_usr, estyle)
+        var F by state { TextFieldValue("${model.currentUsr["F"]}") }
+        myDistrictSpinner(model, model.currentUsr, estyle)
+        myLPUSpinner(model, model.currentUsr, estyle)
         TextField(
             textStyle = estyle,
             value = F,
@@ -123,11 +123,11 @@ fun my10UsrEditCardBox(model: myViewModel) {
             label = { Text("Фамилия") }, modifier = Modifier.padding(0.dp, padd / 2)
         )
         TextButton(content = { Text("Найти") }, onClick = {
-            val usr = model.current_usr.toMutableMap()
+            val usr = model.currentUsr.toMutableMap()
             usr["F"] = F.text
-            model.current_usr = usr
+            model.currentUsr = usr
             model.read10UsrList()
-            model.current_state.postValue("Выбрать пациента")
+            model.currentState.postValue("Выбрать пациента")
         })
     }
 }
@@ -138,12 +138,12 @@ fun myTalonCardBox(model: myViewModel) {
         LazyColumnFor(model.talonList.value!!) {
             //model.talonList.value?.forEach { it ->
             val onclick = {
-                val usr = model.current_usr.toMutableMap()
+                val usr = model.currentUsr.toMutableMap()
                 usr["IdAppointment"] = it["IdAppointment"].toString()
                 usr["VisitStart"] = it["VisitStart"].toString()
                 usr["VisitEnd"] = it["VisitEnd"].toString()
-                model.current_usr = usr
-                model.current_state.postValue("Взять талон")
+                model.currentUsr = usr
+                model.currentState.postValue("Взять талон")
             }
             Box(modifier = mod_card(onclick)) {
                 myTalonFields(it)
@@ -157,12 +157,12 @@ fun myDoctorCardBox(model: myViewModel) {
         LazyColumnFor(model.doctorList.value!!) {
             //model.doctorList.value?.forEach { it ->
             val onclick = {
-                val usr = model.current_usr.toMutableMap()
+                val usr = model.currentUsr.toMutableMap()
                 usr["IdDoc"] = it["IdDoc"].toString()
                 usr["DoctorName"] = it["Name"].toString()
-                model.current_usr = usr
+                model.currentUsr = usr
                 model.readTalonList()
-                model.current_state.postValue("Выбрать талон")
+                model.currentState.postValue("Выбрать талон")
             }
             Box(modifier = mod_card(onclick)) {
                 Column(modifier = mod_padd) {
@@ -183,20 +183,20 @@ fun myDoctorCardBox(model: myViewModel) {
 
 @Composable
 fun myHistCardBox(model: myViewModel) {
-    Text("Отложенные в ${model.current_usr["L"]} талоны:", modifier = Modifier.padding(padd))
+    Text("Отложенные в ${model.currentUsr["L"]} талоны:", modifier = Modifier.padding(padd))
     if (!model.historyList.value.isNullOrEmpty())
         LazyColumnFor(model.historyList.value!!) {
             //model.historyList.value?.forEach { it ->
             //val index = (colors.size * Math.random()).toInt()
             val onclick = {
-                val usr = model.current_usr.toMutableMap()
+                val usr = model.currentUsr.toMutableMap()
                 usr["IdAppointment"] = it["IdAppointment"].toString()
                 usr["VisitStart"] = it["VisitStart"].toString()
                 usr["VisitEnd"] = it["VisitEnd"].toString()
                 usr["Name"] = it["Name"].toString()
                 usr["NameSpesiality"] = it["NameSpesiality"].toString()
-                model.current_usr = usr
-                model.current_state.postValue("Отменить талон")
+                model.currentUsr = usr
+                model.currentState.postValue("Отменить талон")
             }
             Box(modifier = mod_card(onclick)) {
                 myTalonFields(it)
@@ -213,12 +213,12 @@ fun mySpecCardBox(model: myViewModel) {
             //model.specList.value?.forEach { it ->
             //val index = (colors.size * Math.random()).toInt()
             val onclick = {
-                val usr = model.current_usr.toMutableMap()
+                val usr = model.currentUsr.toMutableMap()
                 usr["IdSpesiality"] = it["IdSpesiality"].toString()
                 usr["NameSpesiality"] = it["NameSpesiality"].toString()
-                model.current_usr = usr
+                model.currentUsr = usr
                 model.readDocList()
-                model.current_state.postValue("Выбрать врача")
+                model.currentState.postValue("Выбрать врача")
             }
             Box(modifier = mod_card(onclick)) {
                 Column(modifier = mod_padd) {
@@ -246,12 +246,12 @@ fun myLpuCardBox(model: myViewModel) {
     if (!model.lpuList.value.isNullOrEmpty()) {
         LazyColumnFor(model.lpuList.value!!) {
             val onclick = {
-                val usr = model.current_usr.toMutableMap()
+                val usr = model.currentUsr.toMutableMap()
                 usr["iL"] = it["IdLPU"].toString()
                 usr["L"] = it["Name"].toString()
-                model.current_usr = usr
+                model.currentUsr = usr
                 model.readPatID()
-                model.current_state.postValue("Проверка пациента")
+                model.currentState.postValue("Проверка пациента")
             }
             Box(modifier = mod_card(onclick)) {
                 Column(modifier = mod_padd) {
@@ -283,9 +283,9 @@ fun myUsrCardBox(model: myViewModel) {
     if (!model.usrList.value.isNullOrEmpty())
         LazyColumnFor(model.usrList.value!!) {
             val onclick = {
-                model.current_usr = it
+                model.currentUsr = it
                 model.readLpuList()
-                model.current_state.postValue("Выбрать клинику")
+                model.currentState.postValue("Выбрать клинику")
             }
             Box(modifier = mod_card(onclick)) {
                 Column(modifier = mod_padd) {
@@ -296,8 +296,8 @@ fun myUsrCardBox(model: myViewModel) {
                         Row {
                             Column {
                                 IconButton(onClick = {
-                                    model.current_usr = it
-                                    model.current_state.postValue("Изменить")
+                                    model.currentUsr = it
+                                    model.currentState.postValue("Изменить")
                                 }) { Icon(Icons.Filled.Edit, tint = MaterialTheme.colors.secondary) }
                             }
                             Column(modifier = mod_padd) {
@@ -316,15 +316,15 @@ fun myUsrCardBox(model: myViewModel) {
 fun myTalonGetCardBox(model: myViewModel) {
     Box(modifier = mod_card {}) {
         Column(modifier = Modifier.padding(padd)) {
-            myTalonFields(model.current_usr)
+            myTalonFields(model.currentUsr)
             Row {
                 Button(content = { Text("Взять талон") }, onClick = {
                     model.getTalon()
-                    model.current_state.postValue("Отложенные талоны")
+                    model.currentState.postValue("Отложенные талоны")
                 })
                 TextButton(
                     content = { Text("Назад") },
-                    onClick = { model.current_state.postValue("Выбрать талон") })
+                    onClick = { model.currentState.postValue("Выбрать талон") })
             }
         }
     }
@@ -334,15 +334,15 @@ fun myTalonGetCardBox(model: myViewModel) {
 fun myTalonDelCardBox(model: myViewModel) {
     Box(modifier = mod_card {}) {
         Column(modifier = Modifier.padding(padd)) {
-            myTalonFields(model.current_usr)
+            myTalonFields(model.currentUsr)
             Row {
                 Button(content = { Text("Отменить талон") }, onClick = {
                     model.delTalon()
-                    model.current_state.postValue("Отложенные талоны")
+                    model.currentState.postValue("Отложенные талоны")
                 })
                 TextButton(
                     content = { Text("Назад") },
-                    onClick = { model.current_state.postValue("Отложенные талоны") })
+                    onClick = { model.currentState.postValue("Отложенные талоны") })
             }
         }
     }

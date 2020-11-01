@@ -15,9 +15,9 @@ class myViewModel(ispreview: Boolean = false) : ViewModel() {
     val wait = repository.wait
 
     var isAdmin = false
-    val current_state = MutableLiveData("Выбрать пациента")
+    val currentState = MutableLiveData("Выбрать пациента")
 
-    var current_usr: Map<String, String> = mapOf()
+    var currentUsr: Map<String, String> = mapOf()
     fun createUser(): Map<String, String> {
         //current_usr = repository.createUser()
         return mapOf(
@@ -35,12 +35,12 @@ class myViewModel(ispreview: Boolean = false) : ViewModel() {
     }
     fun updateUserInList() {
         viewModelScope.launch {
-            repository.updateUser(current_usr)
+            repository.updateUser(currentUsr)
         }
     }
     fun deleteCurrentUser() {
         viewModelScope.launch {
-            repository.deleteUser(current_usr)
+            repository.deleteUser(currentUsr)
         }
     }
 
@@ -62,42 +62,42 @@ class myViewModel(ispreview: Boolean = false) : ViewModel() {
     }
     fun read10UsrList() {
         viewModelScope.launch {
-            repository.read10UsrList(current_usr)
+            repository.read10UsrList(currentUsr)
         }
     }
 
     val districtList = if (ispreview) repository.previewList else repository.districtList
     private fun readDistrictList() {
         viewModelScope.launch {
-            repository.readDistrictList(current_usr)
+            repository.readDistrictList(currentUsr)
         }
     }
 
     val lpuList = if (ispreview) repository.previewList else repository.lpuList
     fun readLpuList() {
         viewModelScope.launch {
-            repository.readLpuList(current_usr)
+            repository.readLpuList(currentUsr)
         }
     }
 
     val patID = repository.patID
     fun readPatID() {
         viewModelScope.launch {
-            repository.readPatID(current_usr)
+            repository.readPatID(currentUsr)
         }
     }
 
     val historyList = if (ispreview) repository.previewList else repository.historyList
     fun readHistList() {
         viewModelScope.launch {
-            repository.readHistList(current_usr)
+            repository.readHistList(currentUsr)
         }
     }
 
     val specList = if (ispreview) repository.previewList else repository.specList
     fun readSpecList() {
         viewModelScope.launch {
-            repository.readSpecList(current_usr)
+            repository.readSpecList(currentUsr)
         }
     }
 
@@ -113,26 +113,26 @@ class myViewModel(ispreview: Boolean = false) : ViewModel() {
     val doctorList = if (ispreview) repository.previewList else repository.doctorList
     fun readDocList() {
         viewModelScope.launch {
-            repository.readDocList(current_usr)
+            repository.readDocList(currentUsr)
         }
     }
 
     val talonList = if (ispreview) repository.previewList else repository.talonList
     fun readTalonList() {
         viewModelScope.launch {
-            repository.readTalonList(current_usr)
+            repository.readTalonList(currentUsr)
         }
     }
 
     val talonState = repository.talonState
     fun getTalon() {
         viewModelScope.launch {
-            repository.getTalon(current_usr)
+            repository.getTalon(currentUsr)
         }
     }
     fun delTalon() {
         viewModelScope.launch {
-            repository.delTalon(current_usr)
+            repository.delTalon(currentUsr)
         }
     }
 
