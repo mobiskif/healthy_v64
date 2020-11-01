@@ -9,7 +9,7 @@ import java.io.File
 class myViewModel(ispreview: Boolean = false) : ViewModel() {
     var infoString: String = ""
 
-    //class myViewModel(ispreview: Boolean = false) : ApplicationViewModel(application) {
+    //class myViewModel(ispreview: Boolean = false) : ApplicationViewModel(application_context) {
     lateinit var usrfile: File
     private val repository: myRepository = myRepository()
     val wait = repository.wait
@@ -21,8 +21,8 @@ class myViewModel(ispreview: Boolean = false) : ViewModel() {
     fun createUser(): Map<String, String> {
         //current_usr = repository.createUser()
         return mapOf(
-            "R" to "Адмиралтейский",
-            "iR" to "1",
+            "R" to "Выборгский",
+            "iR" to "2",
             "L" to "",
             "iL" to "",
             "F" to "Новый",

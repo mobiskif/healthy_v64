@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
         File(filesDir, "usrlist.csv").createNewFile()
         model.usrfile = File(filesDir, "usrlist.csv")
 
-        model.patID.observe(this, patientObserver())
         model.wait.observe(this, stateObserver())
         model.current_state.observe(this, stateObserver())
+        model.patID.observe(this, patientObserver())
         model.specList.observe(this, stateObserver())
         model.doctorList.observe(this, stateObserver())
         model.talonList.observe(this, stateObserver())
