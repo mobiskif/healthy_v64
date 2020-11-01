@@ -16,7 +16,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.getColor
 
 /*
     body1 body2 button caption
@@ -25,17 +24,6 @@ import androidx.core.content.ContextCompat.getColor
 */
 
 val padd = 8.dp
-
-//val tmod = Modifier.padding(0.dp, 0.dp, 0.dp, padd)
-val tmod = Modifier.padding(padd)
-val tstyle = TextStyle(fontSize = 18.sp)
-val colors = listOf(
-    Color(0xFFffd7d7.toInt()),
-    Color(0xFFffe9d6.toInt()),
-    Color(0xFFfffbd0.toInt()),
-    Color(0xFFe3ffd9.toInt()),
-    Color(0xFFd0fff8.toInt())
-)
 
 val shapes = Shapes(
     small = RoundedCornerShape(4.dp),
@@ -93,7 +81,7 @@ val DarkPalette = darkColors(
     onBackground = Color.LightGray
 )
 
-
+/*
 fun HexToColor(hex: String): Color {
     var hex = hex
     hex = hex.replace("#", "")
@@ -112,6 +100,7 @@ fun HexToColor(hex: String): Color {
     }
     return Color(0)
 }
+ */
 
 val mod_padd = Modifier.padding(8.dp)
 @Composable
@@ -119,7 +108,6 @@ fun mod_back(): Modifier {
     return Modifier
     .background(color = MaterialTheme.colors.primary, shape = shapes.medium)
 }
-val mod_bord = Modifier.border(1.dp, Color.Red, shapes.small)
 
 @Composable
 fun err_info(): Modifier {

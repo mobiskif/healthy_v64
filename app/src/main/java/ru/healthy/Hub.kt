@@ -16,7 +16,7 @@ class Hub {
     private fun readSOAP(body: String, action: String): XmlPullParser? {
         try {
             val url = URL("https://api.gorzdrav.spb.ru/Proxy/HubService.svc")
-            var conn = url.openConnection() as HttpsURLConnection
+            val conn = url.openConnection() as HttpsURLConnection
             conn.requestMethod = "POST"
             conn.setRequestProperty("Accept-Encoding", "gzip,deflate")
             conn.setRequestProperty("Content-Type", "text/xml;charset=UTF-8")
@@ -37,10 +37,10 @@ class Hub {
 
             //чтение ответа
             conn.connect()
-            var cis = conn.inputStream
-            var isr = InputStreamReader(cis)
-            var reader = BufferedReader(isr)
-            var sb = StringBuilder()
+            val cis = conn.inputStream
+            val isr = InputStreamReader(cis)
+            val reader = BufferedReader(isr)
+            val sb = StringBuilder()
             var line = reader.readLine()
             while (line != null) {
                 sb.append(line)
@@ -51,20 +51,20 @@ class Hub {
             Log.d("jop", "== Ответ == $action = " + sb.length + " bytes, " + sb)
 
             //препарсинг
-            var factory = XmlPullParserFactory.newInstance()
+            val factory = XmlPullParserFactory.newInstance()
             factory.isNamespaceAware = true// включаем поддержку namespace (по умолчанию выключена)
-            var xpp = factory.newPullParser()
+            val xpp = factory.newPullParser()
             xpp.setInput(StringReader(sb.toString()))
             return xpp
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка чтения SOAP " + e.toString())
+            Log.e("jop", "Ошибка чтения SOAP $e")
             return null
         }
 
     }
 
     fun GetDistr(action: String): MutableList<Map<String, String>> {
-        var ret = arrayListOf<String>()
+        val ret = arrayListOf<String>()
         val query =
                 "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">" +
                         "   <soapenv:Header/>" +
@@ -78,11 +78,11 @@ class Hub {
 
         val from = arrayOf("_ID", "column1", "column2", "column3")
         var event: Int
-        var text: String = ""
+        var text = ""
         val mc = MatrixCursor(from)
         val row = arrayOfNulls<Any>(from.size)
         //mc.addRow(row);
-        var result: MutableList<Map<String, String>> = mutableListOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
         var set: MutableMap<String, String> = mutableMapOf()
         try {
             event = myParser!!.eventType
@@ -124,7 +124,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableListOf()
         }
 
@@ -154,7 +154,7 @@ class Hub {
         val mc = MatrixCursor(from)
         val row = arrayOfNulls<Any>(from.size)
         //mc.addRow(row);
-        var result: MutableList<Map<String, String>> = mutableListOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
         var set: MutableMap<String, String> = mutableMapOf()
         var idLPU = "0"
         try {
@@ -186,7 +186,7 @@ class Hub {
                                 set["LPUType"] = text
 
                                 //var result2: MutableList<Map<String, String>> = mutableListOf()
-                                var result2 = GetLpuInfo("GetLPUInfo", arrayOf(idLPU))
+                                val result2 = GetLpuInfo("GetLPUInfo", arrayOf(idLPU))
                                 set["Address"] = result2["Address"].toString()
                                 set["Email"] = result2["Email"].toString()
                                 set["Phone"] = result2["Phone"].toString()
@@ -203,7 +203,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableListOf()
         }
 
@@ -233,8 +233,8 @@ class Hub {
         val mc = MatrixCursor(from)
         val row = arrayOfNulls<Any>(from.size)
         //mc.addRow(row);
-        var result: MutableList<Map<String, String>> = mutableListOf()
-        var set: MutableMap<String, String> = mutableMapOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
+        val set: MutableMap<String, String> = mutableMapOf()
         try {
             event = myParser!!.eventType
             while (event != XmlPullParser.END_DOCUMENT) {
@@ -286,7 +286,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return set
         }
 
@@ -294,7 +294,7 @@ class Hub {
     }
 
     fun GetSpec(action: String, args: Array<String>): MutableList<Map<String, String>> {
-        var ret = arrayListOf<String>()
+        val ret = arrayListOf<String>()
         val idPat = args[1]
         val idLPU = args[0]
 
@@ -318,7 +318,7 @@ class Hub {
         val mc = MatrixCursor(from)
         val row = arrayOfNulls<Any>(from.size)
         //mc.addRow(row);
-        var result: MutableList<Map<String, String>> = mutableListOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
         var text: String = ""
         var set: MutableMap<String, String> = mutableMapOf()
@@ -360,7 +360,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableListOf()
         }
 
@@ -388,7 +388,7 @@ class Hub {
 
         val myParser = readSOAP(query, action)
 
-        var result: MutableList<Map<String, String>> = mutableListOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
         var text: String = ""
         var set: MutableMap<String, String> = mutableMapOf()
@@ -396,7 +396,7 @@ class Hub {
             event = myParser!!.eventType
             //set= mutableMapOf()
             while (event != XmlPullParser.END_DOCUMENT) {
-                var name = myParser.name
+                val name = myParser.name
                 when (event) {
                     XmlPullParser.START_TAG -> {
                     }
@@ -429,7 +429,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableListOf()
         }
 
@@ -456,7 +456,7 @@ class Hub {
 
         val myParser = readSOAP(query, action)
 
-        var result: MutableList<Map<String, String>> = mutableListOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
         var text: String = ""
         var set: MutableMap<String, String> = mutableMapOf()
@@ -464,7 +464,7 @@ class Hub {
             event = myParser!!.eventType
             //set= mutableMapOf()
             while (event != XmlPullParser.END_DOCUMENT) {
-                var name = myParser.name
+                val name = myParser.name
                 when (event) {
                     XmlPullParser.START_TAG -> {
                     }
@@ -506,7 +506,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableListOf()
         }
 
@@ -547,7 +547,7 @@ class Hub {
             event = myParser!!.eventType
             //set= mutableMapOf()
             while (event != XmlPullParser.END_DOCUMENT) {
-                var name = myParser.name
+                val name = myParser.name
                 when (event) {
                     XmlPullParser.START_TAG -> {
                     }
@@ -570,7 +570,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             set = mutableMapOf()
             set["IdPat"] = ""
             set["ErrorDescription"] = "Карточка пациента не найдена. Указанные ФИО, дата рождения и данные в поликлинике должны совпадать. Позвоните/сходите в регистратуру для сверки"
@@ -588,7 +588,7 @@ class Hub {
         val idDoc = args[1]
         val idLPU = args[0]
 
-        var s = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val s = SimpleDateFormat("yyyy-MM-dd").format(Date())
 
         val query = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">" +
                 "   <soapenv:Header/>" +
@@ -607,7 +607,7 @@ class Hub {
 
         val myParser = readSOAP(query, action)
 
-        var result: MutableList<Map<String, String>> = mutableListOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
         var text: String = ""
         var set: MutableMap<String, String> = mutableMapOf()
@@ -615,7 +615,7 @@ class Hub {
             event = myParser!!.eventType
             //set= mutableMapOf()
             while (event != XmlPullParser.END_DOCUMENT) {
-                var name = myParser.name
+                val name = myParser.name
                 when (event) {
                     XmlPullParser.START_TAG -> {
                     }
@@ -655,7 +655,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableListOf()
         }
 
@@ -693,7 +693,7 @@ class Hub {
             event = myParser!!.eventType
             //set= mutableMapOf()
             while (event != XmlPullParser.END_DOCUMENT) {
-                var name = myParser.name
+                val name = myParser.name
                 when (event) {
                     XmlPullParser.START_TAG -> {
                     }
@@ -704,10 +704,10 @@ class Hub {
                         when (name) {
                             "ErrorDescription" -> {
                                 set["ErrorDescription"] = text
-                                Log.d("jops", "ошибка=" + text)
+                                Log.d("jops", "ошибка=$text")
                             }
                             "Success" -> {
-                                Log.d("jops", "успех=" + text)
+                                Log.d("jops", "успех=$text")
                                 //set["Success"] = text
                                 if (text == "true") set["Success"]="Талон отложен!"
                                 else set["Success"] = "Отказано! "+set["ErrorDescription"]
@@ -721,7 +721,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableMapOf()
         }
 
@@ -759,7 +759,7 @@ class Hub {
             event = myParser!!.eventType
             //set= mutableMapOf()
             while (event != XmlPullParser.END_DOCUMENT) {
-                var name = myParser.name
+                val name = myParser.name
                 when (event) {
                     XmlPullParser.START_TAG -> {
                     }
@@ -770,10 +770,10 @@ class Hub {
                         when (name) {
                             "ErrorDescription" -> {
                                 set["ErrorDescription"] = text
-                                Log.d("jops", "ошибка=" + text)
+                                Log.d("jops", "ошибка=$text")
                             }
                             "Success" -> {
-                                Log.d("jops", "успех=" + text)
+                                Log.d("jops", "успех=$text")
                                 //set["Success"] = text
                                 if (text == "true") set["Success"]="Талон отменен!"
                                 else set["Success"] = "Ошибка!\n"+set["ErrorDescription"]
@@ -787,7 +787,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableMapOf()
         }
 
@@ -824,7 +824,7 @@ class Hub {
         val mc = MatrixCursor(from)
         val row = arrayOfNulls<Any>(from.size)
         //mc.addRow(row);
-        var result: MutableList<Map<String, String>> = mutableListOf()
+        val result: MutableList<Map<String, String>> = mutableListOf()
         var event: Int
         var text: String = ""
         var set: MutableMap<String, String> = mutableMapOf()
@@ -834,7 +834,7 @@ class Hub {
             event = myParser!!.eventType
             //set= mutableMapOf()
             while (event != XmlPullParser.END_DOCUMENT) {
-                var name = myParser.name
+                val name = myParser.name
                 when (event) {
                     XmlPullParser.START_TAG -> {
                     }
@@ -852,7 +852,7 @@ class Hub {
                             */
                             "AriaNumber" -> set["AriaNumber"] = text
                             "Birthday" -> {
-                                var loc = text.indexOf("T")
+                                val loc = text.indexOf("T")
                                 val date = text.substring(0, loc)
                                 var time = text.substring(loc + 1)
                                 set["D"] = date
@@ -879,7 +879,7 @@ class Hub {
                 event = myParser.next()
             }
         } catch (e: Exception) {
-            Log.e("jop", "Ошибка парсинга SOAP " + e.toString())
+            Log.e("jop", "Ошибка парсинга SOAP $e")
             return mutableListOf()
         }
 

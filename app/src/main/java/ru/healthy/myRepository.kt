@@ -26,13 +26,6 @@ class myRepository {
         )
     )
 
-    //val previewUsrList = createUsrList()
-    fun createUser(): Map<String, String> {
-        var new_usr = previewList.value!![0]
-        //_usrList.value?.plus(new_usr)
-        return new_usr
-    }
-
     suspend fun addUserToList(user: Map<String, String>) {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
@@ -47,7 +40,7 @@ class myRepository {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
             //исключаем из списка старого юсера с id текущего
-            var lst = usrList.value?.filterNot { it["id"] == usr["id"] }
+            val lst = usrList.value?.filterNot { it["id"] == usr["id"] }
             //вместо него добавляем нового текущего и подменяем usrList
             _usrList.postValue(lst?.plus(usr))
             _wait.postValue(false)
@@ -57,7 +50,7 @@ class myRepository {
     suspend fun deleteUser(usr: Map<String, String>) {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
-            var lst = usrList.value?.filterNot { it == usr }
+            val lst = usrList.value?.filterNot { it == usr }
             _usrList.postValue(lst)
             _wait.postValue(false)
         }
@@ -147,7 +140,7 @@ class myRepository {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
             //_patList.postValue( Hub().GetTop10("SearchTop10Patient", args) )
-            var res = Hub().GetPat("CheckPatient", args)
+            val res = Hub().GetPat("CheckPatient", args)
             _patID.postValue(res)
             _wait.postValue(false)
         }
@@ -225,12 +218,12 @@ class myRepository {
     fun readUsrList(usrfile: File) {
         try {
             if (usrfile.length() > 0) {
-                var fis = FileInputStream(usrfile)
+                val fis = FileInputStream(usrfile)
                 val ois = ObjectInputStream(fis)
                 val usrlist = ois.readObject() as List<Map<String, String>>
                 fis.close()
                 _usrList.postValue(usrlist)
-                Log.d("jop", "${usrfile} прочитано: $usrlist")
+                Log.d("jop", "$usrfile прочитано: $usrlist")
             } else _usrList.postValue(previewList.value)
 
         }
@@ -239,13 +232,13 @@ class myRepository {
         }
     }
     fun updateUsrList(usrfile: File) {
-        var fos = FileOutputStream(usrfile)
+        val fos = FileOutputStream(usrfile)
         val oos = ObjectOutputStream(fos)
         oos.writeObject(usrList.value)
         oos.close()
         fos.close()
 
-        Log.d("jop", "${usrfile} записано: ${usrList.value}")
+        Log.d("jop", "$usrfile записано: ${usrList.value}")
     }
     suspend fun read10UsrList(curr_user: Map<String, String>) {
         val args = arrayOf(

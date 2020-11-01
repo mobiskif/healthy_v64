@@ -15,7 +15,7 @@ class myViewModel(ispreview: Boolean = false) : ViewModel() {
     val wait = repository.wait
 
     var isAdmin = false
-    val current_state = MutableLiveData<String>("Выбрать пациента")
+    val current_state = MutableLiveData("Выбрать пациента")
 
     var current_usr: Map<String, String> = mapOf()
     fun createUser(): Map<String, String> {

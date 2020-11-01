@@ -58,7 +58,7 @@ fun myUsrEditCardBox(model: myViewModel) {
                         Column(modifier = mod_padd) {
                             Row {
                                 Button(content = { Text("Сохранить") }, onClick = {
-                                    var usr = model.current_usr.toMutableMap()
+                                    val usr = model.current_usr.toMutableMap()
                                     usr["F"] = F.text
                                     usr["I"] = I.text
                                     usr["O"] = O.text
@@ -123,7 +123,7 @@ fun my10UsrEditCardBox(model: myViewModel) {
             label = { Text("Фамилия") }, modifier = Modifier.padding(0.dp, padd / 2)
         )
         TextButton(content = { Text("Найти") }, onClick = {
-            var usr = model.current_usr.toMutableMap()
+            val usr = model.current_usr.toMutableMap()
             usr["F"] = F.text
             model.current_usr = usr
             model.read10UsrList()
@@ -135,10 +135,10 @@ fun my10UsrEditCardBox(model: myViewModel) {
 @Composable
 fun myTalonCardBox(model: myViewModel) {
     if (!model.talonList.value.isNullOrEmpty())
-        LazyColumnFor(model.talonList.value!!) { it ->
+        LazyColumnFor(model.talonList.value!!) {
             //model.talonList.value?.forEach { it ->
             val onclick = {
-                var usr = model.current_usr.toMutableMap()
+                val usr = model.current_usr.toMutableMap()
                 usr["IdAppointment"] = it["IdAppointment"].toString()
                 usr["VisitStart"] = it["VisitStart"].toString()
                 usr["VisitEnd"] = it["VisitEnd"].toString()
@@ -154,10 +154,10 @@ fun myTalonCardBox(model: myViewModel) {
 @Composable
 fun myDoctorCardBox(model: myViewModel) {
     if (!model.doctorList.value.isNullOrEmpty())
-        LazyColumnFor(model.doctorList.value!!) { it ->
+        LazyColumnFor(model.doctorList.value!!) {
             //model.doctorList.value?.forEach { it ->
             val onclick = {
-                var usr = model.current_usr.toMutableMap()
+                val usr = model.current_usr.toMutableMap()
                 usr["IdDoc"] = it["IdDoc"].toString()
                 usr["DoctorName"] = it["Name"].toString()
                 model.current_usr = usr
@@ -185,11 +185,11 @@ fun myDoctorCardBox(model: myViewModel) {
 fun myHistCardBox(model: myViewModel) {
     Text("Отложенные в ${model.current_usr["L"]} талоны:", modifier = Modifier.padding(padd))
     if (!model.historyList.value.isNullOrEmpty())
-        LazyColumnFor(model.historyList.value!!) { it ->
+        LazyColumnFor(model.historyList.value!!) {
             //model.historyList.value?.forEach { it ->
             //val index = (colors.size * Math.random()).toInt()
-            var onclick = {
-                var usr = model.current_usr.toMutableMap()
+            val onclick = {
+                val usr = model.current_usr.toMutableMap()
                 usr["IdAppointment"] = it["IdAppointment"].toString()
                 usr["VisitStart"] = it["VisitStart"].toString()
                 usr["VisitEnd"] = it["VisitEnd"].toString()
@@ -209,11 +209,11 @@ fun mySpecCardBox(model: myViewModel) {
     //val item = model.lpuInfo.value
     //Text("${item?.get("Address")} ${item?.get("Phone")} ${item?.get("Email")}", modifier = Modifier.padding(padd) )
     if (!model.specList.value.isNullOrEmpty())
-        LazyColumnFor(model.specList.value!!) { it ->
+        LazyColumnFor(model.specList.value!!) {
             //model.specList.value?.forEach { it ->
             //val index = (colors.size * Math.random()).toInt()
             val onclick = {
-                var usr = model.current_usr.toMutableMap()
+                val usr = model.current_usr.toMutableMap()
                 usr["IdSpesiality"] = it["IdSpesiality"].toString()
                 usr["NameSpesiality"] = it["NameSpesiality"].toString()
                 model.current_usr = usr
@@ -244,9 +244,9 @@ fun mySpecCardBox(model: myViewModel) {
 @Composable
 fun myLpuCardBox(model: myViewModel) {
     if (!model.lpuList.value.isNullOrEmpty()) {
-        LazyColumnFor(model.lpuList.value!!) { it ->
-            var onclick = {
-                var usr = model.current_usr.toMutableMap()
+        LazyColumnFor(model.lpuList.value!!) {
+            val onclick = {
+                val usr = model.current_usr.toMutableMap()
                 usr["iL"] = it["IdLPU"].toString()
                 usr["L"] = it["Name"].toString()
                 model.current_usr = usr
@@ -282,7 +282,7 @@ fun myLpuCardBox(model: myViewModel) {
 fun myUsrCardBox(model: myViewModel) {
     if (!model.usrList.value.isNullOrEmpty())
         LazyColumnFor(model.usrList.value!!) {
-            var onclick = {
+            val onclick = {
                 model.current_usr = it
                 model.readLpuList()
                 model.current_state.postValue("Выбрать клинику")

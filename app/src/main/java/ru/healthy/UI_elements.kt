@@ -20,10 +20,10 @@ import androidx.compose.ui.Modifier
 @androidx.compose.runtime.Composable
 fun myHelp(model: myViewModel) {
     ScrollableColumn {
-        androidx.compose.foundation.layout.Box(modifier = mod_card {}) {
+        Box(modifier = mod_card {}) {
             Column(modifier = mod_padd) {
                 //Text("Как это работает", style = typography.body1)
-                androidx.compose.foundation.layout.Box(modifier = mod_list()) {
+                Box(modifier = mod_list()) {
                     Row {
                         Column(modifier = mod_padd) {
                             Text("Программа лишь выполняет запросы в Регистратуры (к серверам поликлиник) и отображает их ответы.", style = typography.body2)
@@ -84,7 +84,7 @@ fun showCurrentInfo(model: myViewModel) {
     //Box() {
     Column(modifier = mod_padd) {
         if (!model.current_usr["lastError"].isNullOrEmpty()) {
-            androidx.compose.foundation.layout.Box(modifier = err_info()) {
+            Box(modifier = err_info()) {
                 Column(modifier = mod_padd) {
                     Text("${model.current_usr["lastError"]}", style = typography.overline)
                 }

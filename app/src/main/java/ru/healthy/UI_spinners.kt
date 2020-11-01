@@ -16,7 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
-@androidx.compose.runtime.Composable
+/*
+@Composable
 fun myTopDropDownMenu(model: myViewModel) {
     var expanded by state { false }
     DropdownMenu(
@@ -39,6 +40,8 @@ fun myTopDropDownMenu(model: myViewModel) {
 
 }
 
+ */
+
 @androidx.compose.runtime.Composable
 fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyle = TextStyle()) {
     var expanded by state { false }
@@ -48,7 +51,7 @@ fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: Tex
         Row(modifier = Modifier.border(1.dp, Color.LightGray).preferredWidth(280.dp)) {
             Spacer(Modifier.preferredWidth(padd))
             Text(
-                    "$spinnerText",
+                spinnerText,
                     modifier = Modifier.gravity(Alignment.CenterVertically),
                     style = tstyle
             )
@@ -75,7 +78,7 @@ fun myDistrictSpinner(model: myViewModel, user: Map<String, String>, tstyle: Tex
                                     modifier = Modifier.clickable(onClick = {
                                         spinnerText = "${it["Name"]}"
                                         expanded = false
-                                        var usr = model.current_usr.toMutableMap()
+                                        val usr = model.current_usr.toMutableMap()
                                         usr["R"] = spinnerText
                                         usr["iR"] = "${it["IdDistrict"]}"
                                         model.current_usr = usr
@@ -102,7 +105,7 @@ fun myLPUSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyl
         Row(modifier = Modifier.drawBorder(1.dp, Color.LightGray).preferredWidth(280.dp)) {
             Spacer(Modifier.preferredWidth(padd))
             Text(
-                    "$spinnerText",
+                spinnerText,
                     modifier = Modifier.gravity(Alignment.CenterVertically),
                     style = tstyle
             )
@@ -128,7 +131,7 @@ fun myLPUSpinner(model: myViewModel, user: Map<String, String>, tstyle: TextStyl
                                         modifier = Modifier.clickable(onClick = {
                                             spinnerText = "${it["Name"]}"
                                             expanded = false
-                                            var usr = model.current_usr.toMutableMap()
+                                            val usr = model.current_usr.toMutableMap()
                                             usr["L"] = spinnerText
                                             usr["iL"] = "${it["IdLPU"]}"
                                             model.current_usr = usr
