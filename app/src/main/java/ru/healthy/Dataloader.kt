@@ -1,5 +1,7 @@
 package ru.healthy
 
+/*
+
 import android.os.AsyncTask
 import android.util.Log
 import org.ksoap2.SoapEnvelope
@@ -88,3 +90,5 @@ val a = {i:Int -> i+1 }
 class Dataloader2(): DataLoader() {
 
 }
+
+ */

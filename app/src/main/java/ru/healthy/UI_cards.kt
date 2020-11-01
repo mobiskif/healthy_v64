@@ -24,14 +24,14 @@ import androidx.compose.ui.unit.sp
 fun myTalonFields(it: Map<String, String>) {
     Column(modifier = mod_padd) {
         Text("Талон: ${it["IdAppointment"]}", style = typography.body1)
-        Box(modifier = mod_list() + Modifier.wrapContentSize()) {
+        Box(modifier = mod_list().then(Modifier.wrapContentSize())) {
             Row {
                 Column(modifier = mod_padd) {
                     Text("${it["NameSpesiality"]} \nДата: ${it["VisitEnd"]} \nВремя: ${it["VisitStart"]}", style = typography.body2)
                     if ("${it["ErrorDescription"]}".length > 4) Text("${it["ErrorDescription"]}", style = typography.body2)
                 }
-                Column (modifier = mod_padd + mod_back()) {
-                    Box (modifier = mod_padd + Modifier.align(Alignment.End)) {
+                Column (modifier = mod_padd.then(mod_back())) {
+                    Box (modifier = mod_padd.then(Modifier.align(Alignment.End))) {
                         Text("${it["VisitStart"]}", style = typography.h4)
                     }
                 }

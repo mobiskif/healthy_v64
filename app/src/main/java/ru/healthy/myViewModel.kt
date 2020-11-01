@@ -67,7 +67,7 @@ class myViewModel(ispreview: Boolean = false) : ViewModel() {
     }
 
     val districtList = if (ispreview) repository.previewList else repository.districtList
-    fun readDistrictList() {
+    private fun readDistrictList() {
         viewModelScope.launch {
             repository.readDistrictList(current_usr)
         }

@@ -1,5 +1,6 @@
 package ru.healthy
 
+import android.annotation.SuppressLint
 import android.database.MatrixCursor
 import android.util.Log
 import org.xmlpull.v1.XmlPullParser
@@ -209,7 +210,7 @@ class Hub {
         return result
     }
 
-    fun GetLpuInfo(action: String, args: Array<String>): MutableMap<String, String> {
+    private fun GetLpuInfo(action: String, args: Array<String>): MutableMap<String, String> {
         var ret = arrayListOf<String>()
         val idLpu = args[0]
 
@@ -580,6 +581,7 @@ class Hub {
         return result
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun GetApp(action: String, args: Array<String>): MutableList<Map<String, String>> {
 
         val idPat = args[2]

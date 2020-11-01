@@ -1,8 +1,11 @@
 package ru.healthy
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.preferredHeightIn
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar

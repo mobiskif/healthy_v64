@@ -154,7 +154,7 @@ fun mod_card(oncl: () -> Unit): Modifier {
 
 
 @Composable
-fun myTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun myTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(
         colors = if (dark) {
             DarkPalette
