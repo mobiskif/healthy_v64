@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         model.talonState.observe(this, talonStateObserver())
     }
 
+
     override fun onResume() {
         super.onResume()
         model.readUsrList()
