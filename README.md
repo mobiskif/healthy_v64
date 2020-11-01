@@ -10,6 +10,7 @@ Jetpack and Composer
 
 link https://app.lucidchart.com/invitations/accept/2b3ddb2f-63d8-4b74-b1ec-396c32587717
 
+
 ![Image](https://lucid.app/documents/embeddedchart/11ea28ca-b155-4a67-95c8-3f6cf2395c2c)
 
 
