@@ -10,9 +10,9 @@
         android:roundIcon="@drawable/redcross_small"
         android:theme="@style/Theme.Test2.NoActionBar"
         android:allowBackup="false"
-        android:supportsRtl="false">
+        android:supportsRtl="true">
         <activity android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|layoutDirection">
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
