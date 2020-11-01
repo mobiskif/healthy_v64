@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         File(filesDir, "usrlist.csv").createNewFile()
         model.usrfile = File(filesDir, "usrlist.csv")
 
-        model.wait.observe(this, stateObserver())
+        model.wait.observe(this, waitObserver())
         model.current_state.observe(this, stateObserver())
         model.patID.observe(this, patientObserver())
         model.specList.observe(this, stateObserver())
@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         model.talonList.observe(this, stateObserver())
         model.historyList.observe(this, stateObserver())
         model.talonState.observe(this, talonStateObserver())
+    }
+
+    private fun waitObserver() = Observer<Boolean> {
+        Log.d("jop", "wait=$it")
+        setContent { UI_(model) }
     }
 
     override fun onResume() {
