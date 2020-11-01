@@ -7,8 +7,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,8 +19,6 @@ import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.Observer
 import androidx.ui.tooling.preview.Preview
 import java.io.File
-
-
 
 class MainActivity : AppCompatActivity() {
     private val model: myViewModel by viewModels()
@@ -39,11 +40,6 @@ class MainActivity : AppCompatActivity() {
         model.talonState.observe(this, talonStateObserver())
     }
 
-    private fun waitObserver() = Observer<Boolean> {
-        Log.d("jop", "wait=$it")
-        setContent { UI_(model) }
-    }
-
     override fun onResume() {
         super.onResume()
         model.readUsrList()
@@ -52,16 +48,6 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         model.saveUsrList()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        Log.d("jop",newConfig.toString())
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || window.attributes.width > window.attributes.height) isVertical =
-            false
-        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || window.attributes.width < window.attributes.height) isVertical =
-            true
-        setContent { UI_(model) }
     }
 
     override fun onBackPressed() {
@@ -79,6 +65,21 @@ class MainActivity : AppCompatActivity() {
             "Отменить талон" -> state = "Выбрать специальность"
         }
         model.current_state.postValue(state)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        Log.d("jop",newConfig.toString())
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE || window.attributes.width > window.attributes.height) isVertical =
+            false
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT || window.attributes.width < window.attributes.height) isVertical =
+            true
+        setContent { UI_(model) }
+    }
+
+    private fun waitObserver() = Observer<Boolean> {
+        Log.d("jop", "wait=$it")
+        setContent { UI_(model) }
     }
 
     private fun patientObserver() = Observer<Map<String, String>> {
@@ -167,40 +168,32 @@ fun showCurrentState(model: myViewModel) {
 }
 
 @Composable
-fun myScaffold(model: myViewModel) {
-    Scaffold(
-        topBar = { myBar(model) },
-        floatingActionButton = { myFab(model) }
-    ) {
-        if (model.wait.value!!) {
-            Column(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.fillMaxSize().then(mod_padd)) {
-                    Text("Запрос в регистратуру ${model.current_usr["L"]}", style = typography.body1)
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+fun UI_(model: myViewModel) {
+    myTheme {
+        Scaffold(
+            topBar = { myBar(model) },
+            floatingActionButton = { myFab(model) }
+        ) {
+            if (model.wait.value!!) {
+                Column(modifier = Modifier.fillMaxSize()) {
+                    Box(modifier = Modifier.fillMaxSize().then(mod_padd)) {
+                        Text("Запрос в регистратуру ${model.current_usr["L"]}", style = typography.body1)
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                }
+            }
+            else {
+                Column {
+                    showCurrentInfo(model)
+                    showCurrentState(model)
                 }
             }
         }
-        else {
-            Column {
-                showCurrentInfo(model)
-                showCurrentState(model)
-            }
-        }
     }
 }
-
-@Composable
-fun UI_(model: myViewModel) {
-    myTheme {
-        myScaffold(model)
-    }
-}
-
 
 @Preview(showBackground = true, showDecoration = true)
 @Composable
 fun LightPreview() {
-    myTheme(false) {
-        myScaffold(myViewModel(true))
-    }
+    UI_(myViewModel(true))
 }
