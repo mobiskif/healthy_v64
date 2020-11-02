@@ -102,6 +102,7 @@ class MyRepository {
         withContext(Dispatchers.IO) {
             _wait.postValue(true)
             _districtList.postValue(Hub().getDistr("GetDistrictList"))
+            //_districtList.postValue(Hub2().getDistr("GetDistrictList"))
             _wait.postValue(false)
         }
     }

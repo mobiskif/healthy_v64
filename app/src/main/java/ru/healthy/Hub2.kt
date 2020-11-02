@@ -1,8 +1,5 @@
 package ru.healthy
 
-/*
-
-import android.os.AsyncTask
 import android.util.Log
 import org.ksoap2.SoapEnvelope
 import org.ksoap2.serialization.PropertyInfo
@@ -10,23 +7,18 @@ import org.ksoap2.serialization.SoapObject
 import org.ksoap2.serialization.SoapSerializationEnvelope
 import org.ksoap2.transport.HttpTransportSE
 
-open class DataLoader : AsyncTask<Void, Void, String>() {
-    var SOAP_URL = "https://api.gorzdrav.spb.ru/Service/HubService.svc?wsdl"
-    var SOAP_NAMESPACE = "http://tempuri.org/"
-    //var SOAP_METHOD_NAME = "GetDistrictList"
-    //var SOAP_METHOD_NAME = "GetLPUList"
-    //var SOAP_METHOD_NAME = "GetSpesialityList"
-    var SOAP_METHOD_NAME = "GetDoctorList"
-    var SOAP_ACTION = "http://tempuri.org/IHubService/$SOAP_METHOD_NAME"
 
-    var result: MutableList<Map<String, String>> = mutableListOf()
+//не использую, т.к. очень долгий запрос
+class Hub2 {
+    private val SOAPURL = "https://api.gorzdrav.spb.ru/Service/HubService.svc?wsdl"
+    private val SOAPNAMESPACE = "http://tempuri.org/"
     var set: MutableMap<String, String> = mutableMapOf()
-    var level=0
+    private var result: MutableList<Map<String, String>> = mutableListOf()
 
-    fun process(po: Any, pi: PropertyInfo) {
+    private fun process(po: Any, pi: PropertyInfo) {
         if (po is SoapObject) {
             Log.d("jop", "SoapObject= ${pi.name}")
-            if(set.size>0) result.add(set)
+            if(set.isNotEmpty()) result.add(set)
             set = mutableMapOf()
             for (i in 0 until po.propertyCount) {
                 process(po.getProperty(i), po.getPropertyInfo(i))
@@ -38,9 +30,13 @@ open class DataLoader : AsyncTask<Void, Void, String>() {
         }
     }
 
-    override fun doInBackground(vararg params: Void): String {
-        var strresult = ""
-        val request = SoapObject(SOAP_NAMESPACE, SOAP_METHOD_NAME)
+
+    fun getDistr(action: String): MutableList<Map<String, String>> {
+        result= mutableListOf()
+
+        //val SOAP_METHOD_NAME = "GetDistrictList"
+        val SOAPACTION = "http://tempuri.org/IHubService/$action"
+        val request = SoapObject(SOAPNAMESPACE, action)
         request.addProperty("IdDistrict", 4)
         //request.addProperty("idLpu", 27)
         request.addProperty("idLpu", 175)
@@ -60,17 +56,16 @@ open class DataLoader : AsyncTask<Void, Void, String>() {
         //envelope.isAddAdornments = false
         //envelope.headerOut = arrayOfNulls(1)
 
-        val androidHttpTransport = HttpTransportSE(SOAP_URL)
+        val androidHttpTransport = HttpTransportSE(SOAPURL)
 
         try {
             androidHttpTransport.debug = false
-            androidHttpTransport.call(SOAP_ACTION, envelope)
+            androidHttpTransport.call(SOAPACTION, envelope)
             //Log.d("jop", "request: " + androidHttpTransport.requestDump)
             //Log.d("jop", "response: " + androidHttpTransport.responseDump)
 
             val soapObject = envelope.response as SoapObject
             for (i in 0 until soapObject.propertyCount) {
-                level=0
                 process(soapObject.getProperty(i), soapObject.getPropertyInfo(i))
             }
             Log.d("jop", result.toString())
@@ -80,15 +75,6 @@ open class DataLoader : AsyncTask<Void, Void, String>() {
             Log.e("jop", "responseEror: " + androidHttpTransport.responseDump)
             Log.e("jop", e.toString())
         }
-        a(3)
-        return strresult;
+        return result
     }
 }
-
-val a = {i:Int -> i+1 }
-
-class Dataloader2(): DataLoader() {
-
-}
-
- */
